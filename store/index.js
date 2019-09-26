@@ -3,24 +3,43 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+let userState = {
+	hasLogin: false,
+	username: '',
+	userImg: ''
+};
+
+const userInfo = uni.getStorageSync('userInfo');
+if(userInfo.hasLogin){	
+	userState = userInfo;
+}
+
 const store = new Vuex.Store({
 	state: {
-		hasLogin: false,
-		loginProvider: "",
-		openid: null
+		...userState
+		// loginProvider: "",
+		// openid: null,
 	},
 	mutations: {
-		login(state, provider) {
+		login(state, userinfo) {
 			state.hasLogin = true;
-			state.loginProvider = provider;
+			state.username = userinfo.username;
+			state.userImg  = userinfo.userImg;
+			// state.loginProvider = provider;
+			
+			uni.setStorageSync('userInfo', {...state});	
 		},
 		logout(state) {
 			state.hasLogin = false
-			state.openid = null
+			state.username = '';
+			state.userImg  = '';
+			// state.openid = null
+			
+			uni.clearStorageSync();
 		},
-		setOpenid(state, openid) {
-			state.openid = openid
-		}
+		// setOpenid(state, openid) {
+		// 	state.openid = openid
+		// }
 	},
 	actions: {
 		// 封装api请求方式

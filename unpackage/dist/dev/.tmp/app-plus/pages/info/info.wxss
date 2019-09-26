@@ -1,0 +1,21 @@
+
+.content {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	padding: 10rpx 2%;
+	width: 96%;
+	-webkit-flex-wrap: wrap;
+	    -ms-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.info-title {
+	line-height: 2em;
+	font-weight: 700;
+	font-size: 38rpx;
+	text-align: center;
+}
+.info-content{
+}
+

@@ -11,6 +11,22 @@
 					</view>
 				</view>
 			</view>
+			<view class="uni-list-cell">
+				<view class="uni-media-list">
+					<view class="uni-media-list-body">
+						<view v-if="hasLogin">
+							{{username}}
+							<view class="logout" @tap="tologout">退出登录</view>
+						</view>
+						<view v-else>
+							<navigator url="../login/login" hover-class="navigator-hover">
+								<button type="default">登录</button>
+							</navigator>
+						</view>
+						
+					</view>
+				</view>
+			</view>
 		</view>
 		
 		
@@ -21,6 +37,8 @@
 </template>
 
 <script>
+	import {mapState, mapMutations} from 'vuex';
+	
 	export default {
 		data() {
 			return {
@@ -28,6 +46,8 @@
 			}
 		},
 		onLoad() {
+			console.log('hasLogin: ')
+			console.log(this.hasLogin)
 			this.$http.request({
 			    url: '/music/getMusicList',
 			    method: 'post',
@@ -47,8 +67,12 @@
 				console.log(err)
 			})
 		},
+		computed: {
+			...mapState(['hasLogin', 'username'])
+		},
 		methods: {
-			gotoinfo(e) {
+			...mapMutations(['logout']),
+			gotoinfo: function(e) {
 				var newsid = e.currentTarget.dataset.newsid;
 				uni.navigateTo({
 					url: '../info/info?newsid=' + newsid,
@@ -62,6 +86,10 @@
 						console.log('gotoinfo complete')
 					}
 				});
+			},
+			tologout: function() {
+				// 退出登录后不需要显示的刷新页面，因为退出登录成功后 state改变 页面会自动重新加载
+				this.logout();
 			}
 		}
 	}

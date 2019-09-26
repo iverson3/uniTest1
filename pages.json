@@ -12,6 +12,10 @@
 				"navigationBarTitleText": "news-info"
 			}
         }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
