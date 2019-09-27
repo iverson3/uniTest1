@@ -14,8 +14,38 @@
         }
         ,{
             "path" : "pages/login/login",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "login"
+			}
         }
+        ,{
+            "path" : "pages/list/list",
+            "style" : {
+				"navigationBarTitleText": "long-list",
+				"enablePullDownRefresh" : false,  // 不开启下拉刷新, 默认就是false
+				"app-plus" : {
+					"bounce" : "none" // 取消iOS回弹,避免和下拉刷新冲突 (小程序无法取消, 点此查看H5端的取消方法... )
+				}
+			}
+        }
+        ,{
+            "path" : "pages/music/music",
+            "style" : {
+            	"navigationBarTitleText": "music"
+            }
+        }
+		,{
+		    "path" : "pages/activity/activity",
+		    "style" : {
+		    	"navigationBarTitleText": "activity"
+		    }
+		}
+		,{
+		    "path" : "pages/user/user",
+		    "style" : {
+		    	"navigationBarTitleText": "user center"
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -23,9 +53,40 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
+	"tabBar": {
+		"color": "#C0C4CC",
+		"selectedColor": "#fa436a",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabbar/tab-home.png",
+				"selectedIconPath": "static/tabbar/tab-home-current.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/music/music",
+				"iconPath": "static/tabbar/tab-cate.png",
+				"selectedIconPath": "static/tabbar/tab-cate-current.png",
+				"text": "曲谱"
+			},
+			{
+				"pagePath": "pages/activity/activity",
+				"iconPath": "static/tabbar/tab-cart.png",
+				"selectedIconPath": "static/tabbar/tab-cart-current.png",
+				"text": "活动"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"iconPath": "static/tabbar/tab-my.png",
+				"selectedIconPath": "static/tabbar/tab-my-current.png",
+				"text": "我的"
+			}
+		]
+	},
 	
 	"condition": { // 模式配置，仅开发期间生效
-		"current": 1, // 当前激活的模式(list的索引)
+		"current": 2, // 当前激活的模式(list的索引)
 		"list": [
 			{
 				"name": "index", // 模式名称
@@ -36,6 +97,11 @@
 				"name": "info", // 模式名称
 				"path": "pages/info/info", // 启动页面
 				"query": "newsid=2" // 页面参数 在页面的onLoad函数里面得到
+			},
+			{
+				"name": "music", // 模式名称
+				"path": "pages/music/music", // 启动页面
+				"query": "" // 页面参数 在页面的onLoad函数里面得到
 			}
 		]
 	}

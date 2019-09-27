@@ -1654,11 +1654,11 @@ radio-group label, checkbox-group label{
         -ms-transform: translateY(50%);
             transform: translateY(50%);
 }
-page,
+
+/* flex布局对跨平台的兼容性更好 */
+
+/* page,
 view {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;  /* flex布局对跨平台的兼容性更好 */
-}
+	display: flex;  
+} */
 

@@ -1,7 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/info/info"
+    "pages/info/info",
+    "pages/login/login",
+    "pages/list/list"
   ],
   "subPackages": [],
   "window": {
@@ -11,5 +13,7 @@
     "backgroundColor": "#F8F8F8"
   },
   "permission": {},
-  "usingComponents": {}
+  "usingComponents": {
+    "u-link": "/components/uLink"
+  }
 }

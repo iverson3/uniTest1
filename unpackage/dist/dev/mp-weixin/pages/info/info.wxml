@@ -1,1 +1,1 @@
-<view class="content"><text>info</text></view>
+<view class="content"><view class="info-title">{{info.name}}</view><rich-text class="info-content" nodes="{{info.content}}"></rich-text><u-link class="link" vue-id="1" href="https://www.baidu.com/" text="链接" bind:__l="__l"></u-link></view>
