@@ -86,7 +86,7 @@
 	},
 	
 	"condition": { // 模式配置，仅开发期间生效
-		"current": 2, // 当前激活的模式(list的索引)
+		"current": 0, // 当前激活的模式(list的索引)
 		"list": [
 			{
 				"name": "index", // 模式名称

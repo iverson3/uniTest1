@@ -11,7 +11,7 @@
     "code": "100"
   },
   "description": "",
-  "launch_path": "__uniappview.html",
+  "launch_path": "__uniapptabbar.html",
   "developer": {
     "name": "",
     "email": "",
@@ -34,11 +34,7 @@
       "delay": 0
     },
     "popGesture": "close",
-    "launchwebview": {
-      "render": "always",
-      "id": "1",
-      "kernel": "WKWebview"
-    },
+    "launchwebview": {},
     "statusbar": {
       "immersed": "supportedDevice",
       "style": "dark",
@@ -82,8 +78,14 @@
         }
       }
     },
-    "arguments": "{\"name\":\"info\",\"query\":\"newsid=2\",\"id\":1,\"pathName\":\"pages/info/info\"}",
+    "arguments": "{\"name\":\"index\",\"query\":\"\",\"id\":0,\"pathName\":\"pages/index/index\"}",
     "allowsInlineMediaPlayback": true,
+    "safearea": {
+      "background": "#ffffff",
+      "bottom": {
+        "offset": "auto"
+      }
+    },
     "uni-app": {
       "compilerVersion": "2.3.3",
       "control": "v8",
@@ -92,6 +94,14 @@
       "nvue": {
         "flex-direction": "column"
       }
+    },
+    "secondwebview": {
+      "id": "1",
+      "launch_path": "__uniappview.html",
+      "kernel": "WKWebview",
+      "mode": "child",
+      "top": 0,
+      "bottom": 56
     }
   }
 }

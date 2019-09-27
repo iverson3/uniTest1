@@ -312,12 +312,6 @@
 	}
 	
 	/* #ifdef MP */
-	.cate-section{
-		position:relative;
-		z-index:5;
-		border-radius:16upx 16upx 0 0;
-		margin-top:-20upx;
-	}
 	.carousel-section{
 		padding: 0;
 	}

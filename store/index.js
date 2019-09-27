@@ -6,7 +6,12 @@ Vue.use(Vuex)
 let userState = {
 	hasLogin: false,
 	username: '',
-	userImg: ''
+	userImg: '',
+	
+	// 是否显示选择picker
+	typeSelectorShow: false,
+	levelSelectorShow: false,
+	sortSelectorShow: false,
 };
 
 const userInfo = uni.getStorageSync('userInfo');
@@ -40,6 +45,15 @@ const store = new Vuex.Store({
 		// setOpenid(state, openid) {
 		// 	state.openid = openid
 		// }
+		changeTypeSelector(state, status) {
+			state.typeSelectorShow = status;
+		},
+		changeLevelSelector(state, status) {
+			state.typeSelectorShow = status;
+		},
+		changeSortSelector(state, status) {
+			state.typeSelectorShow = status;
+		},
 	},
 	actions: {
 		// 封装api请求方式

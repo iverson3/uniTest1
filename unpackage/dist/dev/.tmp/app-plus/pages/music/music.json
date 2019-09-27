@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "music",
+  "usingComponents": {
+    "w-picker": "/components/w-picker/w-picker",
+    "uni-icons": "/components/uni-icons/uni-icons"
+  }
+}

@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "news-info",
-  "usingComponents": {}
+  "usingComponents": {
+    "u-link": "/components/uLink"
+  }
 }
