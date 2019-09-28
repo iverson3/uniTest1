@@ -82,10 +82,6 @@
 			</view>
 		</view>
 		
-		
-		<!-- #ifdef MP-WEIXIN -->
-		<text>mp</text>
-		<!-- #endif -->
 	</view>
 </template>
 

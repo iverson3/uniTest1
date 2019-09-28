@@ -1,45 +1,53 @@
 {
-  "description": "项目配置文件。",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "es6": false
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.7.0",
-  "appid": "wx5fe2e9e859558af5",
-  "projectname": "uniTest1",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "current": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": 0,
-      "list": [
-        {
-          "name": "index",
-          "query": "",
-          "id": 0,
-          "pathName": "pages/index/index"
-        },
-        {
-          "name": "info",
-          "query": "newsid=2",
-          "id": 1,
-          "pathName": "pages/info/info"
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"es6": false
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.7.0",
+	"appid": "wx5fe2e9e859558af5",
+	"projectname": "uniTest1",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"name": "index",
+					"query": "",
+					"id": 0,
+					"pathName": "pages/index/index"
+				},
+				{
+					"name": "info",
+					"query": "newsid=2",
+					"id": 1,
+					"pathName": "pages/info/info"
+				},
+				{
+					"name": "music",
+					"query": "",
+					"id": 2,
+					"pathName": "pages/music/music"
+				}
+			]
+		}
+	}
 }

@@ -1,6 +1,35 @@
 <template>
-	<view>
+	<view class="container">
+		<!-- search搜索框 -->
+		<!-- <zy-search :is-focus="false" :is-block="true" :show-want="false" @searchStart="gosearch"></zy-search> -->
+		<view class="search">
+			<!-- #ifdef APP-PLUS -->
+				<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
+			<!-- #endif -->
+			<template v-if="isFocus">
+				<input maxlength="20" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
+			</template>
+			<template v-else>
+				<input maxlength="20" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
+			</template>
+			<image src="../../static/zy-search/search.svg" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
+		</view>
 		
+		<!-- picker选择器 -->
+		<view class="cate-section">
+			<view @tap="showSelector(0)" class="cate-item">
+				<text>{{type}}</text>
+				<uni-icons type="arrowdown" size="30"></uni-icons>
+			</view>
+			<view @tap="showSelector(1)" class="cate-item">
+				<text>{{level}}</text>
+				<uni-icons type="arrowdown" size="30"></uni-icons>
+			</view>
+			<view @tap="showSelector(2)" class="cate-item">
+				<text>{{sort}}</text>
+				<uni-icons type="arrowdown" size="30"></uni-icons>
+			</view>
+		</view>
 		<w-picker
 			class="typepicker"
 			mode="selector" 
@@ -33,36 +62,24 @@
 		></w-picker>
 		
 		
-		<!-- <zy-search :is-focus="false" :is-block="true" :show-want="false" @searchStart="gosearch"></zy-search> -->
-		
-		<view class="search">
-			<!-- #ifdef APP-PLUS -->
-				<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
-			<!-- #endif -->
-			<template v-if="isFocus">
-				<input maxlength="20" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
-			</template>
-			<template v-else>
-				<input maxlength="20" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
-			</template>
-			<image src="../../static/zy-search/search.svg" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
+		<view class="list">
+			<!-- 空白页 -->
+			<empty v-if="loaded === true && musicList.length === 0"></empty>
+			
+			<!-- 曲谱列表 -->
+			<view class="uni-list">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in musicList" :key="index" @tap="gotoinfo" :data-newsid="item.id">
+					<view class="uni-media-list">
+						<image class="uni-media-list-logo" :src="item.url"></image>
+						<view class="uni-media-list-body">
+							<view class="uni-media-list-text-top">{{item.name}}</view>
+							<view class="uni-media-list-text-bottom uni-ellipsis">{{item.created_at}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
 		</view>
-		
-		<view class="cate-section">
-			<view @tap="showSelector(0)" class="cate-item">
-				<text>{{type}}</text>
-				<uni-icons type="arrowdown" size="30"></uni-icons>
-			</view>
-			<view @tap="showSelector(1)" class="cate-item">
-				<text>{{level}}</text>
-				<uni-icons type="arrowdown" size="30"></uni-icons>
-			</view>
-			<view @tap="showSelector(2)" class="cate-item">
-				<text>{{sort}}</text>
-				<uni-icons type="arrowdown" size="30"></uni-icons>
-			</view>
-		</view>
-		
 	</view>
 </template>
 
@@ -70,11 +87,13 @@
 	// import zySearch from '@/components/zy-search/zy-search.vue'
 	import wPicker from "@/components/w-picker/w-picker.vue";
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	import empty from "@/components/empty";
 	
 	export default {
 		components: {
 			wPicker,
 			uniIcons,
+			empty,
 			// zySearch
 		},
 		data() {
@@ -159,7 +178,14 @@
 						value: 'name'
 					}
 				],
+				
+				musicList: [],
+				loaded: false,
+				isLoading: false,
 			}
+		},
+		onLoad: function() {
+			this.getData()
 		},
 		methods: {
 			showSelector: function(index){
@@ -186,7 +212,30 @@
 				console.log(this.type)
 				console.log(this.level)
 				console.log(this.sort)
+				let type = (this.type == '全部' || this.type == '类型')? '' : this.type
+				let level = (this.level == '全部' || this.level == '难度')? '' : this.level
+				let sort = (this.sort == '排序')? 'mix' : this.sort
+				
 				// 根据页面选择的条件 调用api从服务器端获取数据
+				this.$http.request({
+					url: '/music/getMusicList',
+					method: 'post',
+					header: {},
+					params: {
+						page: 1,
+						pagesize: 10,
+						name: this.searchText,
+						type: type,
+						level: level,
+						order: sort
+					}
+				}).then(res => {
+					console.log(res)
+					console.log(res.data.data)
+					this.musicList = res.data.data.data
+				}).catch(err => {
+					console.log(err)
+				})
 			},
 			
 			searchStart: function() {	//触发搜索
@@ -243,13 +292,34 @@
 				plus.speech.startRecognize(options, function(s) {
 					_this.searchText = _this.searchText + s;
 				});
-			}
+			},
+			
+			gotoinfo: function(e) {
+				var newsid = e.currentTarget.dataset.newsid;
+				uni.navigateTo({
+					url: '../info/info?newsid=' + newsid,
+					success: res => {
+						console.log('gotoinfo success')
+					},
+					fail: () => {
+						console.log('gotoinfo fail')
+					},
+					complete: () => {
+						console.log('gotoinfo complete')
+					}
+				});
+			},
 		}
 	}
 </script>
 
 <style lang="less" scoped>
-	/* 分类 */
+	.container {
+		display: flex;
+		flex-direction: column;
+	}
+	
+	/* picker选择器 */
 	/* #ifdef MP */
 	.cate-section{
 		position:relative;
@@ -264,7 +334,7 @@
 		justify-content: space-around;
 		align-items: center;
 		flex-wrap:wrap;
-		padding: 30upx 22upx 0 22upx; 
+		padding: 15upx 22upx 16upx 22upx; 
 		background: #fff;
 		.cate-item {
 			display: flex;
@@ -272,6 +342,9 @@
 			align-items: center;
 			font-size: 20upx;
 			color: #333333;
+			text {
+				font-size: 38rpx;
+			}
 		}
 	}
 	.ad-1{
@@ -294,6 +367,7 @@
 			padding: 10upx 74upx;
 			font-size: 28upx;
 			// border-radius: 50upx;
+			height: 64rpx;
 		}
 		.voice-icon{
 			width: 36upx;
@@ -307,11 +381,20 @@
 		.search-icon{
 			width: 36upx;
 			height: 36upx;
-			padding: 16upx 20upx 16upx 0;
+			padding: 22upx 20upx 16upx 0;
 			position: absolute;
 			right: 0;
 			top: 4upx;
 			z-index: 10;
 		}
+	}
+	
+	// 数据列表容器
+	.list {
+		display: flex;
+		flex-direction: column;
+		height: auto;
+		min-height: 500rpx;
+		width: 100%;
 	}
 </style>
