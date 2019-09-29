@@ -8,10 +8,8 @@ let userState = {
 	username: '',
 	userImg: '',
 	
-	// 是否显示选择picker
-	typeSelectorShow: false,
-	levelSelectorShow: false,
-	sortSelectorShow: false,
+	activityList: [],
+	curActid: 0,
 };
 
 const userInfo = uni.getStorageSync('userInfo');
@@ -24,6 +22,25 @@ const store = new Vuex.Store({
 		...userState
 		// loginProvider: "",
 		// openid: null,
+	},
+	getters: {
+		curActivityDetail(state) {
+			let res = null;
+			for (let activity in state.activitylist) {
+				console.log('activity')
+				if (parseInt(activity.id) === parseInt(state.curActid)) {
+					
+					console.log(activity)
+					res = activity;
+					return;
+				}
+			}
+			if (res) {
+				return res;
+			} else {
+				return {};
+			}
+		}
 	},
 	mutations: {
 		login(state, userinfo) {
@@ -45,14 +62,12 @@ const store = new Vuex.Store({
 		// setOpenid(state, openid) {
 		// 	state.openid = openid
 		// }
-		changeTypeSelector(state, status) {
-			state.typeSelectorShow = status;
+		
+		setActivityList(state, data) {
+			state.activityList = data;
 		},
-		changeLevelSelector(state, status) {
-			state.typeSelectorShow = status;
-		},
-		changeSortSelector(state, status) {
-			state.typeSelectorShow = status;
+		setCurActId(state, id) {
+		  state.curActid = id;
 		},
 	},
 	actions: {

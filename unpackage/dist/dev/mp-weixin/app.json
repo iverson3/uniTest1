@@ -50,6 +50,5 @@
   "permission": {},
   "usingComponents": {
     "u-link": "/components/uLink"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

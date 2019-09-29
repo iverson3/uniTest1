@@ -1,35 +1,57 @@
 <template>
 	<view class="container">
-		<!-- search搜索框 -->
-		<!-- <zy-search :is-focus="false" :is-block="true" :show-want="false" @searchStart="gosearch"></zy-search> -->
-		<view class="search">
-			<!-- #ifdef APP-PLUS -->
-				<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
-			<!-- #endif -->
-			<template v-if="isFocus">
-				<input maxlength="20" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
-			</template>
-			<template v-else>
-				<input maxlength="20" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
-			</template>
-			<image src="../../static/zy-search/search.svg" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
+		<view class="fix-tool-tab">
+			<!-- search搜索框 -->
+			<!-- <zy-search :is-focus="false" :is-block="true" :show-want="false" @searchStart="gosearch"></zy-search> -->
+			<view class="search">
+				<!-- #ifdef APP-PLUS -->
+					<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
+				<!-- #endif -->
+				<template v-if="isFocus">
+					<input maxlength="20" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
+				</template>
+				<template v-else>
+					<input maxlength="20" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
+				</template>
+				<image src="../../static/zy-search/search.svg" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
+			</view>
+			
+			<!-- picker选择器 -->
+			<view class="cate-section">
+				<view @tap="showSelector(0)" class="cate-item">
+					<text>{{type}}</text>
+					<uni-icons type="arrowdown" size="30"></uni-icons>
+				</view>
+				<view @tap="showSelector(1)" class="cate-item">
+					<text>{{level}}</text>
+					<uni-icons type="arrowdown" size="30"></uni-icons>
+				</view>
+				<view @tap="showSelector(2)" class="cate-item">
+					<text>{{sort}}</text>
+					<uni-icons type="arrowdown" size="30"></uni-icons>
+				</view>
+			</view>
 		</view>
 		
-		<!-- picker选择器 -->
-		<view class="cate-section">
-			<view @tap="showSelector(0)" class="cate-item">
-				<text>{{type}}</text>
-				<uni-icons type="arrowdown" size="30"></uni-icons>
-			</view>
-			<view @tap="showSelector(1)" class="cate-item">
-				<text>{{level}}</text>
-				<uni-icons type="arrowdown" size="30"></uni-icons>
-			</view>
-			<view @tap="showSelector(2)" class="cate-item">
-				<text>{{sort}}</text>
-				<uni-icons type="arrowdown" size="30"></uni-icons>
-			</view>
+		
+		<view class="list">
+			<!-- 曲谱列表 -->
+			<mescroll-uni :fixed="false" :down="downOption" @down="downCallback" :up="upOption" @up="upCallback" >
+				<view class="uni-list">
+					<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in musicList" :key="index" @tap="gotoinfo" :data-newsid="item.id">
+						<view class="uni-media-list">
+							<image class="uni-media-list-logo" :src="item.url"></image>
+							<view class="uni-media-list-body">
+								<view class="uni-media-list-text-top">{{item.name}}</view>
+								<view class="uni-media-list-text-bottom uni-ellipsis">{{item.created_at}}</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</mescroll-uni>
 		</view>
+		
+		
 		<w-picker
 			class="typepicker"
 			mode="selector" 
@@ -60,26 +82,6 @@
 			themeColor="#f00"
 			:selectList="sortList"
 		></w-picker>
-		
-		
-		<view class="list">
-			<!-- 空白页 -->
-			<empty v-if="loaded === true && musicList.length === 0"></empty>
-			
-			<!-- 曲谱列表 -->
-			<view class="uni-list">
-				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in musicList" :key="index" @tap="gotoinfo" :data-newsid="item.id">
-					<view class="uni-media-list">
-						<image class="uni-media-list-logo" :src="item.url"></image>
-						<view class="uni-media-list-body">
-							<view class="uni-media-list-text-top">{{item.name}}</view>
-							<view class="uni-media-list-text-bottom uni-ellipsis">{{item.created_at}}</view>
-						</view>
-					</view>
-				</view>
-			</view>
-			
-		</view>
 	</view>
 </template>
 
@@ -87,13 +89,13 @@
 	// import zySearch from '@/components/zy-search/zy-search.vue'
 	import wPicker from "@/components/w-picker/w-picker.vue";
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
-	import empty from "@/components/empty";
+	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
 	
 	export default {
 		components: {
 			wPicker,
 			uniIcons,
-			empty,
+			MescrollUni,
 			// zySearch
 		},
 		data() {
@@ -106,6 +108,7 @@
 					{default: '难度', ref: 'levelselector'},
 					{default: '排序', ref: 'sortselector'}
 				],
+				page: 1,
 				
 				type: '类型',
 				typeList:[
@@ -179,13 +182,29 @@
 					}
 				],
 				
+				mescroll: null, // mescroll组件的实例对象
+				downOption: {
+					use: true,  // 是否启用下拉刷新; 默认true
+					auto: true, // 是否在初始化完毕之后自动执行下拉刷新的回调; 默认true
+				},
+				upOption: {
+					use: true,  // 是否启用上拉加载; 默认true
+					auto: true, // 是否在初始化完毕之后自动执行上拉加载的回调; 默认true
+					page: {
+						num: 0,  // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+						size: 3  // 每页数据的数量,默认10
+					},
+					noMoreSize: 0, // 配置列表的总数量要大于等于多少条才显示'-- END --'的提示
+					empty: {
+						tip: '暂无相关数据'
+					}
+				},
+				
 				musicList: [],
-				loaded: false,
-				isLoading: false,
 			}
 		},
 		onLoad: function() {
-			this.getData()
+			
 		},
 		methods: {
 			showSelector: function(index){
@@ -195,26 +214,57 @@
 			onTypeConfirm(val){
 				console.log(val);
 				this.type = val.result;
-				this.getData()
+				if (this.mescroll) {
+					this.downCallback(this.mescroll)
+				} else {
+					this.page = 1;
+					this.getData()
+				}
 			},
 			onLevelConfirm(val){
 				console.log(val);
 				this.level = val.result;
-				this.getData()
+				if (this.mescroll) {
+					this.downCallback(this.mescroll)
+				} else {
+					this.page = 1;
+					this.getData()
+				}
 			},
 			onSortConfirm(val){
 				console.log(val);
 				this.sort = val.result;
+				if (this.mescroll) {
+					this.downCallback(this.mescroll)
+				} else {
+					this.page = 1;
+					this.getData()
+				}
+			},
+			
+			downCallback: function(mescroll){
+				console.log('下拉刷新')
+				this.page = 1
+				mescroll.resetUpScroll();  // 重置列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
+			},
+			
+			/*上拉加载的回调*/
+			upCallback: function(mescroll) {
+				console.log('上拉加载')
+				this.mescroll = mescroll
 				this.getData()
 			},
+			
 			getData: function() {
-				console.log(this.searchText)
-				console.log(this.type)
-				console.log(this.level)
-				console.log(this.sort)
 				let type = (this.type == '全部' || this.type == '类型')? '' : this.type
 				let level = (this.level == '全部' || this.level == '难度')? '' : this.level
 				let sort = (this.sort == '排序')? 'mix' : this.sort
+				for (let s of this.sortList) {
+					if (sort == s.label) {
+						sort = s.value
+						break
+					}
+				}
 				
 				// 根据页面选择的条件 调用api从服务器端获取数据
 				this.$http.request({
@@ -222,8 +272,8 @@
 					method: 'post',
 					header: {},
 					params: {
-						page: 1,
-						pagesize: 10,
+						page: this.page,
+						pagesize: this.upOption.page.size,
 						name: this.searchText,
 						type: type,
 						level: level,
@@ -231,57 +281,51 @@
 					}
 				}).then(res => {
 					console.log(res)
-					console.log(res.data.data)
-					this.musicList = res.data.data.data
+					let data = res.data.data;
+					let curPageData = data.data; 
+					let totalSize   = data.total; 
+					
+					// 如果是第一页 则置空列表数据
+					if(this.page == 1) {
+						this.musicList = [];
+					}   
+					this.musicList = this.musicList.concat(curPageData); // 追加新数据
+					
+					if (this.mescroll) {
+						// 成功隐藏下拉加载状态
+						this.mescroll.endBySize(curPageData.length, totalSize); 
+					}
+					
+					// 判断是否还有下一页
+					if (data.last_page > this.page) {
+						this.page = this.page + 1;
+					}
 				}).catch(err => {
+					if (this.mescroll) {
+						// 失败隐藏下拉加载状态
+						this.mescroll.endErr()
+					}
 					console.log(err)
 				})
 			},
 			
-			searchStart: function() {	//触发搜索
-				let _this = this;
-				if (_this.searchText == '') {
-					uni.showToast({
-						title: '请输入关键字',
-						icon: 'none',
-						duration: 1000
-					});
-					return false;
-				}else{
-					console.log(_this.searchText)
-					_this.getData()
-					// uni.getStorage({
-					// 	key:'search_cache',
-					// 	success(res){
-					// 		let list = res.data;
-					// 		console.log(list);
-					// 		if(list.length > 5){
-					// 			for(let item of list){
-					// 				if(item == _this.searchText){
-					// 					return false;
-					// 				}
-					// 			}
-					// 			list.pop();
-					// 			list.unshift(_this.searchText);
-					// 		}else{
-					// 			for(let item of list){
-					// 				if(item == _this.searchText){
-					// 					return false;
-					// 				}
-					// 			}
-					// 			list.unshift(_this.searchText);
-					// 		}
-					// 		uni.setStorage({
-					// 			key: 'search_cache'
-					// 		});
-					// 	},
-					// 	fail() {
-					// 		uni.setStorage({
-					// 			key: 'search_cache'
-					// 		});
-					// 	}
-					// })
-				}
+			searchStart: function() {	// 触发搜索
+				// if (this.searchText == '') {
+				// 	uni.showToast({
+				// 		title: '请输入关键字',
+				// 		icon: 'none',
+				// 		duration: 1000
+				// 	});
+				// 	return false;
+				// } else {
+					console.log(this.searchText)
+					if (this.mescroll) {
+						this.downCallback(this.mescroll)
+					} else {
+						this.page = 1;
+						this.getData()
+					}
+				// }
 			},
 			startRecognize: function() {	//语音输入
 				let _this = this;
@@ -319,6 +363,12 @@
 		flex-direction: column;
 	}
 	
+	.fix-tool-tab {
+		position: fixed;
+		width: 100%;
+		z-index: 10000;
+	}
+	
 	/* picker选择器 */
 	/* #ifdef MP */
 	.cate-section{
@@ -326,6 +376,7 @@
 		z-index:5;
 		border-radius:16upx 16upx 0 0;
 		margin-top:-20upx;
+		background-color: #F7F7F7;
 	}
 	/* #endif */
 	
@@ -335,7 +386,7 @@
 		align-items: center;
 		flex-wrap:wrap;
 		padding: 15upx 22upx 16upx 22upx; 
-		background: #fff;
+		background: #F7F7F7;
 		.cate-item {
 			display: flex;
 			flex-direction: row;
@@ -358,10 +409,17 @@
 		}
 	}
 	
+	/* #ifdef MP-WEIXIN */
+	.search {
+		margin-bottom: 20rpx!important;
+	}
+	/* #endif */
 	.search{
-		width: 640upx;
-		margin: 30upx auto 0;
+		width: 100%;
+		margin: 0px auto;
 		position: relative;
+		border-bottom: 1px solid #d5d5d6;
+		border-top: 1px solid #d5d5d6;
 		input{
 			background-color: #F7F7F7;
 			padding: 10upx 74upx;
@@ -396,5 +454,9 @@
 		height: auto;
 		min-height: 500rpx;
 		width: 100%;
+		padding-top: 93px;
+	}
+	.uni-media-list-body {
+		height: auto;
 	}
 </style>

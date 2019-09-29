@@ -46,7 +46,7 @@
 				<empty v-if="tabItem.loaded === true && tabItem.musicList.length === 0"></empty>
 				
 				<!-- 曲谱列表 -->
-				<view class="uni-list">
+				<view class="uni-list" v-else>
 					<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(item,index) in tabItem.musicList" :key="index" @tap="gotoinfo" :data-newsid="item.id">
 						<view class="uni-media-list">
 							<image class="uni-media-list-logo" :src="item.url"></image>
@@ -58,7 +58,8 @@
 					</view>
 				</view>
 				
-				<uni-load-more :status="tabItem.loadingType"></uni-load-more>
+				<!-- 这个地方不需要"加载更多"的组件 因为这里只需要加载一次数据就够了(最多十条数据)  -->
+				<!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
 			</swiper-item>
 		</swiper>
 		

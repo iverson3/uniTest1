@@ -1,4 +1,4 @@
-.container.data-v-c91a332a {
+.container.data-v-35507b14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9,14 +9,20 @@
       -ms-flex-direction: column;
           flex-direction: column;
 }
+.fix-tool-tab.data-v-35507b14 {
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
+}
 /* picker选择器 */
-.cate-section.data-v-c91a332a {
+.cate-section.data-v-35507b14 {
   position: relative;
   z-index: 5;
   border-radius: 16rpx 16rpx 0 0;
   margin-top: -20rpx;
+  background-color: #F7F7F7;
 }
-.cate-section.data-v-c91a332a {
+.cate-section.data-v-35507b14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -32,9 +38,9 @@
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
   padding: 15rpx 22rpx 16rpx 22rpx;
-  background: #fff;
+  background: #F7F7F7;
 }
-.cate-section .cate-item.data-v-c91a332a {
+.cate-section .cate-item.data-v-35507b14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -51,31 +57,36 @@
   font-size: 20rpx;
   color: #333333;
 }
-.cate-section .cate-item text.data-v-c91a332a {
+.cate-section .cate-item text.data-v-35507b14 {
   font-size: 38rpx;
 }
-.ad-1.data-v-c91a332a {
+.ad-1.data-v-35507b14 {
   width: 100%;
   height: 210rpx;
   padding: 10rpx 0;
   background: #fff;
 }
-.ad-1 image.data-v-c91a332a {
+.ad-1 image.data-v-35507b14 {
   width: 100%;
   height: 100%;
 }
-.search.data-v-c91a332a {
-  width: 640rpx;
-  margin: 30rpx auto 0;
-  position: relative;
+.search.data-v-35507b14 {
+  margin-bottom: 20rpx!important;
 }
-.search input.data-v-c91a332a {
+.search.data-v-35507b14 {
+  width: 100%;
+  margin: 0px auto;
+  position: relative;
+  border-bottom: 1px solid #d5d5d6;
+  border-top: 1px solid #d5d5d6;
+}
+.search input.data-v-35507b14 {
   background-color: #F7F7F7;
   padding: 10rpx 74rpx;
   font-size: 28rpx;
   height: 64rpx;
 }
-.search .voice-icon.data-v-c91a332a {
+.search .voice-icon.data-v-35507b14 {
   width: 36rpx;
   height: 36rpx;
   padding: 16rpx 20rpx 16rpx 0;
@@ -84,7 +95,7 @@
   top: 4rpx;
   z-index: 10;
 }
-.search .search-icon.data-v-c91a332a {
+.search .search-icon.data-v-35507b14 {
   width: 36rpx;
   height: 36rpx;
   padding: 22rpx 20rpx 16rpx 0;
@@ -93,7 +104,7 @@
   top: 4rpx;
   z-index: 10;
 }
-.list.data-v-c91a332a {
+.list.data-v-35507b14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -106,5 +117,6 @@
   height: auto;
   min-height: 500rpx;
   width: 100%;
+  padding-top: 93px;
 }
 

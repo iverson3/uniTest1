@@ -733,7 +733,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1498,9 +1498,9 @@ uni$1;exports.default = _default;
 /***/ }),
 
 /***/ 116:
-/*!***********************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/components/mescroll-uni/mescroll-uni.js ***!
-  \***********************************************************************************************/
+/*!****************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/components/mescroll-uni/mescroll-uni.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2250,9 +2250,9 @@ MeScroll.prototype.setBounce = function (isBounce) {
 /***/ }),
 
 /***/ 117:
-/*!******************************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/components/mescroll-uni/mescroll-uni-option.js ***!
-  \******************************************************************************************************/
+/*!***********************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/components/mescroll-uni/mescroll-uni-option.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2292,9 +2292,9 @@ GlobalOption;exports.default = _default;
 /***/ }),
 
 /***/ 125:
-/*!*************************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/components/w-picker/city-data/province.js ***!
-  \*************************************************************************************************/
+/*!******************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/components/w-picker/city-data/province.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2442,9 +2442,9 @@ provinceData;exports.default = _default;
 /***/ }),
 
 /***/ 126:
-/*!*********************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/components/w-picker/city-data/city.js ***!
-  \*********************************************************************************************/
+/*!**************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/components/w-picker/city-data/city.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3956,9 +3956,9 @@ cityData;exports.default = _default;
 /***/ }),
 
 /***/ 127:
-/*!*********************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/components/w-picker/city-data/area.js ***!
-  \*********************************************************************************************/
+/*!**************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/components/w-picker/city-data/area.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16509,9 +16509,9 @@ areaData;exports.default = _default;
 /***/ }),
 
 /***/ 128:
-/*!***************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/components/w-picker/w-picker.js ***!
-  \***************************************************************************************/
+/*!********************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/components/w-picker/w-picker.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17129,9 +17129,9 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 15:
-/*!**********************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/store/index.js ***!
-  \**********************************************************************/
+/*!***************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/store/index.js ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18155,9 +18155,9 @@ var index_esm = {
 /***/ }),
 
 /***/ 17:
-/*!***********************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/index.js ***!
-  \***********************************************************************************/
+/*!****************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/index.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18197,9 +18197,9 @@ create;exports.default = _default;
 /***/ }),
 
 /***/ 18:
-/*!****************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/core/index.js ***!
-  \****************************************************************************************/
+/*!*********************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/core/index.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18333,9 +18333,9 @@ MyRequest;exports.default = _default;
 /***/ }),
 
 /***/ 19:
-/*!**********************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/core/interceptor.js ***!
-  \**********************************************************************************************/
+/*!***************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/core/interceptor.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23868,7 +23868,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -23889,14 +23889,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -23972,7 +23972,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -24350,9 +24350,9 @@ internalMixin(Vue);
 /***/ }),
 
 /***/ 20:
-/*!**********************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/core/mergeConfig.js ***!
-  \**********************************************************************************************/
+/*!***************************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/core/mergeConfig.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24421,9 +24421,9 @@ mergeConfig;exports.default = _default;
 /***/ }),
 
 /***/ 21:
-/*!***********************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/tools.js ***!
-  \***********************************************************************************/
+/*!****************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/tools.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24607,9 +24607,9 @@ $;exports.default = _default;
 /***/ }),
 
 /***/ 22:
-/*!******************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/core/network.js ***!
-  \******************************************************************************************/
+/*!***********************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/core/network.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24689,9 +24689,9 @@ exports.upload = upload;var download = function download(config) {
 /***/ }),
 
 /***/ 23:
-/*!************************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/plugins/request/js/config.js ***!
-  \************************************************************************************/
+/*!*****************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/plugins/request/js/config.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25630,9 +25630,9 @@ if (hadRuntime) {
 /***/ }),
 
 /***/ 27:
-/*!********************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/api/token.js ***!
-  \********************************************************************/
+/*!*************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/api/token.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25694,9 +25694,9 @@ module.exports = g;
 /***/ }),
 
 /***/ 4:
-/*!******************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/pages.json ***!
-  \******************************************************************/
+/*!***********************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/pages.json ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26601,9 +26601,9 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ }),
 
 /***/ 7:
-/*!***********************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/pages.json?{"type":"style"} ***!
-  \***********************************************************************************/
+/*!****************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/pages.json?{"type":"style"} ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26613,9 +26613,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ }),
 
 /***/ 8:
-/*!**********************************************************************************!*\
-  !*** /Users/iFan/Documents/HBuilderProjects/uniTest1/pages.json?{"type":"stat"} ***!
-  \**********************************************************************************/
+/*!***************************************************************!*\
+  !*** E:/HBuilderProjects/uniTest1/pages.json?{"type":"stat"} ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
