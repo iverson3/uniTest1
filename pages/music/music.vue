@@ -411,20 +411,26 @@
 	
 	/* #ifdef MP-WEIXIN */
 	.search {
-		margin-bottom: 20rpx!important;
+		margin-bottom: 25rpx!important;
+	}
+	/* #endif */
+	/* #ifdef APP-PLUS */
+	.search {
+		margin-bottom: 3rpx!important;
 	}
 	/* #endif */
 	.search{
-		width: 100%;
+		width: 98%;
 		margin: 0px auto;
 		position: relative;
-		border-bottom: 1px solid #d5d5d6;
-		border-top: 1px solid #d5d5d6;
+		margin-top: 2rpx;
+		// border-bottom: 1px solid #d5d5d6;
+		// border-top: 1px solid #d5d5d6;
 		input{
 			background-color: #F7F7F7;
 			padding: 10upx 74upx;
 			font-size: 28upx;
-			// border-radius: 50upx;
+			border-radius: 50upx;
 			height: 64rpx;
 		}
 		.voice-icon{
@@ -454,7 +460,7 @@
 		height: auto;
 		min-height: 500rpx;
 		width: 100%;
-		padding-top: 93px;
+		padding-top: 180rpx;
 	}
 	.uni-media-list-body {
 		height: auto;

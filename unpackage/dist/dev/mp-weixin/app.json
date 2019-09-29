@@ -6,7 +6,8 @@
     "pages/list/list",
     "pages/music/music",
     "pages/activity/activity",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/activityinfo/activityinfo"
   ],
   "subPackages": [],
   "window": {
@@ -50,5 +51,6 @@
   "permission": {},
   "usingComponents": {
     "u-link": "/components/uLink"
-  }
+  },
+  "sitemapLocation": "sitemap72.json"
 }

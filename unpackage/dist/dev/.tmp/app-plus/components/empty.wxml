@@ -1,1 +1,1 @@
-<view class="empty-content"><image class="empty-content-image" src="{{setSrc}}" mode="aspectFit"></image></view>
+<view class="empty-content"><block wx:if="{{src=='empty'}}"><image class="empty-content-image" src="{{setSrc}}" mode="aspectFit"></image></block><block wx:else><view>{{''+setSrc+''}}</view></block></view>

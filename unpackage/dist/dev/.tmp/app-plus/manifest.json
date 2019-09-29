@@ -78,7 +78,7 @@
         }
       }
     },
-    "arguments": "{\"name\":\"index\",\"query\":\"\",\"id\":0,\"pathName\":\"pages/index/index\"}",
+    "arguments": "{\"name\":\"activity\",\"query\":\"\",\"id\":3,\"pathName\":\"pages/activity/activity\"}",
     "allowsInlineMediaPlayback": true,
     "safearea": {
       "background": "#ffffff",

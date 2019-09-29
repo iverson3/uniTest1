@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "user center",
+  "navigationBarTitleText": "用户中心",
   "usingComponents": {
     "wuc-tab": "/components/wuc-tab/wuc-tab"
   }

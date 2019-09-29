@@ -26,13 +26,10 @@ const store = new Vuex.Store({
 	getters: {
 		curActivityDetail(state) {
 			let res = null;
-			for (let activity in state.activitylist) {
-				console.log('activity')
+			for (let activity of state.activityList) {
 				if (parseInt(activity.id) === parseInt(state.curActid)) {
-					
-					console.log(activity)
 					res = activity;
-					return;
+					break;
 				}
 			}
 			if (res) {

@@ -9,6 +9,11 @@
       -ms-flex-direction: column;
           flex-direction: column;
 }
+.fix-tool-tab.data-v-c91a332a {
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
+}
 /* picker选择器 */
 .cate-section.data-v-c91a332a {
   display: -webkit-box;
@@ -26,7 +31,7 @@
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
   padding: 15rpx 22rpx 16rpx 22rpx;
-  background: #fff;
+  background: #F7F7F7;
 }
 .cate-section .cate-item.data-v-c91a332a {
   display: -webkit-box;
@@ -59,14 +64,19 @@
   height: 100%;
 }
 .search.data-v-c91a332a {
-  width: 640rpx;
-  margin: 30rpx auto 0;
+  margin-bottom: 3rpx!important;
+}
+.search.data-v-c91a332a {
+  width: 98%;
+  margin: 0px auto;
   position: relative;
+  margin-top: 2rpx;
 }
 .search input.data-v-c91a332a {
   background-color: #F7F7F7;
   padding: 10rpx 74rpx;
   font-size: 28rpx;
+  border-radius: 50rpx;
   height: 64rpx;
 }
 .search .voice-icon.data-v-c91a332a {
@@ -100,6 +110,9 @@
   height: auto;
   min-height: 500rpx;
   width: 100%;
-  background-color: #999999;
+  padding-top: 180rpx;
+}
+.uni-media-list-body.data-v-c91a332a {
+  height: auto;
 }
 

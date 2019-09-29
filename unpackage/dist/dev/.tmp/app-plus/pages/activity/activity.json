@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "activity",
-  "usingComponents": {}
+  "navigationBarTitleText": "活动",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
 }
