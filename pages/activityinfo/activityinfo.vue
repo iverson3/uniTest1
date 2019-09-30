@@ -32,9 +32,9 @@
 		
 		    <view class="activity-member-list">
 		        <view class="member-count">
-		            已报名({{memberSum}})
-					<navigator :url="'../activity/CancelJoinActivity?id='+activityDetail.id" hover-class="navigator-hover">
-						<button type="default" v-show="canJoin" class="cancel-join">取消报名>></button>
+		            <view class="member-count-text">已报名({{memberSum}})</view>
+					<navigator class="member-count-cancel" :url="'../activity/CancelJoinActivity?id='+activityDetail.id" hover-class="navigator-hover">
+						<view v-show="canJoin" class="cancel-join">取消报名>></view>
 					</navigator>
 		        </view>
 				
@@ -51,7 +51,7 @@
 				</view>
 		    </view>
 		
-		    <navigator :url="'../activity/JoinActivity?id='+activityDetail.id" hover-class="navigator-hover">
+		    <navigator :url="'../activity/joinactivity?id='+activityDetail.id" hover-class="navigator-hover">
 		    <view class="activity-join-div" v-show="canJoin">
 		        <view class="activity-join">
 		            立即报名
@@ -177,7 +177,7 @@
 	}
 	.activity-title {
 	    font-size: 46rpx;
-	    padding: 0 30rpx 20rpx 30rpx;
+	    padding: 20rpx 30rpx 30rpx 30rpx;
 		line-height: 1.4;
 	}
 	.uni-list-cell {
@@ -205,10 +205,15 @@
 		padding-bottom: 80rpx;
 	}
 	.member-count {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	    font-size: 36rpx;
 	    color: #5390e4;
 	    background-color: #E0E0E0;
 	    padding: 20rpx 0 20rpx 30rpx;
+	}
+	.member-count-cancel {
 	}
 	.uni-media-list {
 		display: flex;
@@ -222,7 +227,6 @@
 		justify-content: space-between;
 	}
 	.cancel-join {
-	    float: right;
 	    padding-right: 24rpx;
 	    font-size: 24rpx;
 	    color: gray;

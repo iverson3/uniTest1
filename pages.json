@@ -52,6 +52,12 @@
 				"navigationBarTitleText": "活动详情"
 			}
         }
+        ,{
+            "path" : "pages/activity/joinactivity",
+            "style" : {
+				"navigationBarTitleText": "活动报名"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -113,6 +119,11 @@
 				"name": "activity", // 模式名称
 				"path": "pages/activity/activity", // 启动页面
 				"query": "" // 页面参数 在页面的onLoad函数里面得到
+			},
+			{
+				"name": "activityinfo", // 模式名称
+				"path": "pages/activityinfo/activityinfo", // 启动页面
+				"query": "id=14" // 页面参数 在页面的onLoad函数里面得到
 			}
 		]
 	}

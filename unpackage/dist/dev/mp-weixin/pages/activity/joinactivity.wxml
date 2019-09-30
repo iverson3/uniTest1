@@ -1,0 +1,1 @@
+<view><inputs vue-id="1" inputsArray="{{inputsArray}}" activeName="活动报名表单22" fontSizeScaleSet="{{fontSizeScaleSet}}" data-event-opts="{{[['^activeFc',[['activeFc']]]]}}" bind:activeFc="__e" bind:__l="__l"></inputs></view>
