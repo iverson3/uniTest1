@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "曲谱详情",
-  "usingComponents": {}
+  "usingComponents": {
+    "u-link": "/components/uLink"
+  }
 }

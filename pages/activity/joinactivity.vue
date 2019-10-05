@@ -23,6 +23,7 @@
 		data() {
 			return {
 				activity_id: 0,
+				isNeedPicOrUrl: true,
 				
 				fontSizeScaleSet: { //inputs内的字体大小系数设置(字体大小为屏幕宽高度以此系数)
 					allScale: .028,
@@ -39,16 +40,12 @@
 						title: '名字',
 						placeholder: '请填写你的姓名或网名',
 						maxlength: 32,
-						
-						ignore: true
 					},
 					{
 						variableName: 'wechat',
 						title: '微信号',
 						placeholder: "请填写自己的微信号",
 						maxlength: 64,
-						
-						ignore: true
 					},
 					
 					{
@@ -75,7 +72,6 @@
 						steps: {
 							step_1_value: 'name', // 第一级显示的属性名
 						},
-						ignore: true
 					},
 					{
 						type: "picker-custom2",
@@ -101,7 +97,6 @@
 						steps: {
 							step_1_value: 'name', // 第一级显示的属性名
 						},
-						ignore: true
 					},
 					{
 						variableName: 'remark',
@@ -115,19 +110,19 @@
 				
 				picInput: {
 					type: "pics",
-					variableName: "pic1",
+					variableName: "pic",
 					title: "琴照上传",
 					itemArray: [{
-						title: "",
+						title: "琴照",
 						ignore: false
 					}],
 					border_bottom: "1px solid #f2f2f2",
 					clearColor: "#c0ebd7",
 					hide: false,
-					// customId: "imgBlob"
+					customId: "imgBlob"
 				},
 				urlInput: {
-					variableName: 'pic2',
+					variableName: 'pic',
 					title: '视频地址',
 					placeholder: "请填写一个你的弹琴视频链接地址",
 					maxlength: 128,
@@ -145,80 +140,153 @@
 			inputsChange: function(obj) {
 				console.log('change')
 				console.log(obj)
+				if (obj.index == 'wechat'){
+					this.$http.request({
+						url: '/activity/validateMemberByWechat',
+						method: 'post',
+						params: {wechat: obj.newData}
+					}).then(res => {
+						console.log(res)
+						if (res.data.success) {
+							this.isNeedPicOrUrl = false;
+						} else {
+							this.isNeedPicOrUrl = true;
+						}
+					}).catch(err => {
+						console.log(err)
+					})
+				}
+				
+				
 				if (obj.index == 'level') {
-					if (obj.newData.result[0].name == '萌新') { 
-						
-						console.log(this.inputsArray)
-						if (this.inputsArray.length == 5) {
-							this.inputsArray.splice(4, 0, this.picInput)
+					if (this.isNeedPicOrUrl) {
+						if (obj.newData.result[0].name == '萌新') {
+							// console.log(JSON.parse(JSON.stringify(this.inputsArray)))
+							if (this.inputsArray.length == 5) {
+								this.inputsArray.splice(5, 0, this.picInput)
+							} else {
+								this.inputsArray.splice(5, 1, this.picInput);
+							}
 						} else {
-							this.inputsArray.splice(5, 1, this.picInput);
+							if (this.inputsArray.length == 5) {
+								this.inputsArray.splice(5, 0, this.urlInput)
+							} else {
+								this.inputsArray.splice(5, 1, this.urlInput);
+							}
 						}
-						console.log(this.inputsArray)
-						
-						// this.inputsArray[5].hide = false
-						// this.inputsArray[6].hide = true
 					} else {
-						console.log(this.inputsArray)
-						if (this.inputsArray.length == 5) {
-							this.inputsArray.splice(4, 0, this.urlInput)
-						} else {
-							this.inputsArray.splice(5, 1, this.urlInput);
+						if (this.inputsArray.length > 5) {
+							this.inputsArray.splice(5, 1);
 						}
-						console.log(this.inputsArray)
-						
-						// this.inputsArray[5].hide = true
-						// this.inputsArray[6].hide = false
 					}
 				}
 			},
 			activeFc: function(res) {
-				// uni.showToast({
-				// 	title: "获取输入成功"
-				// })
-				
-				if (res.pic1 == '' && res.pic2 == '') {
-					if (res.level == '萌新') {
-						uni.showToast({
-							title: "请先上传琴照"
-						})
-					} else {
-						uni.showToast({
-							title: "请先填写视频地址"
-						})
-					}
-					return;
-				}
-				
-				let pic = '';
-				if (res.pic1 != '') {
-					// 处理图片上传的结果数据
-					let obj = JSON.parse(res.pic1)
-					if (!obj.success) {
-						uni.showToast({
-							title: "图片上传失败，请重试"
-						})
-						return;
-					}
-					pic = obj.url;
-				} else {
-					pic = res.pic2;
-				}
-				
-				res.pic = pic;
-				delete res.pic1;
-				delete res.pic2;
+				let _this = this;
 				
 				// 处理level和music_type字段数据
 				res.level      = res.level.result[0].name;
 				res.music_type = res.music_type.result[0].name;
 				
+				if (this.isNeedPicOrUrl) {
+					if (this.isNumber(res.pic)) {
+						uni.showToast({
+							title: "请正确填写视频地址"
+						})
+						return;
+					}
+					
+					if (res.level == '萌新') {
+						if (this.isJSON(res.pic)) {
+							let obj = JSON.parse(res.pic);
+							if (!obj.success) {
+								uni.showToast({
+									title: "图片上传失败，请重试"
+								})
+								return;
+							}
+							res.pic = obj.url;
+						}
+					} else {
+						if (!this.isURL(res.pic)) {
+							uni.showToast({
+								title: "请正确填写视频地址"
+							})
+							return;
+						}
+					}
+				} else {
+					res.pic = '';
+				}
+				
 				res.activity_id = this.activity_id;
+				res.isOldMember = this.isNeedPicOrUrl ? 2 : 1;
 				
 				console.log(res)
 				// console.log(JSON.stringify(res));
 				
-				
+				this.$http.request({
+					url: '/activity/joinActivity',
+					method: 'post',
+					params: res
+				}).then(res => {
+					console.log(res)
+					if (res.data.success) {
+						uni.showToast({
+							title: "恭喜! 报名成功"
+						})
+						setTimeout(function() {
+							uni.navigateTo({
+								url: '../activityinfo/activityinfo?id=' + _this.activity_id
+							});
+						}, 600);
+					} else if (res.data.error == 'repeat') {
+						uni.showToast({
+							title: "不允许重复报名"
+						})
+					} else if (res.data.error == 'black') {
+						uni.showToast({
+							title: "你在黑名单中"
+						})
+					} else {
+						uni.showToast({
+							title: "报名失败，请稍后再试"
+						})
+					}
+				}).catch(err => {
+					uni.showToast({
+						title: "报名失败，请稍后再试"
+					})
+					console.log(err)
+				})
+			},
+			
+			isJSON: function(str) {
+				try {
+					// 非json字符串在进行json格式化时会抛出异常
+					JSON.parse(str);
+					return true;
+				} catch(e) {
+					return false;
+				}
+			},
+			isNumber: function(val) {
+			    var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+			    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+			    if (regPos.test(val) || regNeg.test(val)) {
+			        return true;
+			    } else {
+			        return false;
+			    }
+			},
+			isURL: function(url) {
+			    const strRegex = /((^http)|(^https)|(^ftp)):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-/.,@?^=%&:/~/+#]*[\w\-/@?^=%&/~/+#])?/
+			    const re = new RegExp(strRegex)
+			    if (re.test(url)) {
+					return true
+			    } else {
+			        return false
+			    }
 			}
 		}
 	}

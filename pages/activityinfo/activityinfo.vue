@@ -43,7 +43,7 @@
 						<view class="uni-media-list">
 							<view class="uni-media-list-top">
 								<view class="uni-media-list-top-left">{{member.name}}</view>
-								<view class="uni-media-list-top-right">{{member.music_type + member.level}}</view>
+								<view class="uni-media-list-top-right">{{member.music_type + "-" + member.level}}</view>
 							</view>
 							<view class="uni-media-list-bottom">{{'留言：' + member.remark}}</view>
 						</view>
@@ -91,6 +91,9 @@
 			this.activityDetail = this.curActivityDetail
 			
 			let activityid = e.id;
+			if (typeof activityid == 'undefined' || activityid == 'undefined') {
+				activityid = this.curActid;
+			}
 			
 			this.$http.request({
 				url: '/activity/getMemberList',
