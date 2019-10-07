@@ -10,18 +10,32 @@
  * path:必填配置 （路由地址）
  * requiresAuth:可选配置 （是否权限路由）
  */
+import store from "@/store"
+import * as Apis from '../apis/index.js'
+import mConfig from "./index.config.js"
 
 export default {
 	// 权限路由
 	activityinfo: {
 		name: "活动详情",
 		path: "/pages/activityinfo/activityinfo",
-		requiresAuth: false
+		requiresAuth: false,
+		before: function() {
+			console.log('goto activityinfo before')
+			console.log(store)
+			let res = store.getters.hasLogin
+			console.log('login: ' + res)
+		},
+		after: function() {
+			console.log('goto activityinfo after')
+			let res = Apis.getMemberList({id: store.state.curActid})
+			console.log(res)
+		}
 	},
 	joinactivity: {
 		name: "活动报名",
 		path: "/pages/activity/joinactivity",
-		requiresAuth: true
+		requiresAuth: false
 	},
 	
 	// 非权限路由
@@ -31,11 +45,20 @@ export default {
 	},
 	login: {
 		name: "登录",
-		path: "/pages/login/login"
+		path: "/pages/login/login",
+		before: function() {
+			console.log('goto login before')
+		},
+		after: function() {
+			console.log('goto login after')
+		}
 	},
 	activitylist: {
 		name: "活动中心",
-		path: "/pages/activity/activity"
+		path: "/pages/activity/activity",
+		back: function() {
+			console.log('back to activitylist')
+		}
 	},
 	musiclist: {
 		name: "曲谱中心",

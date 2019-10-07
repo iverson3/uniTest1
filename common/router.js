@@ -6,6 +6,8 @@
  * 示例：this.$mRouter.push({route:this.$mRoutesConfig.main,query:{a:1}})
  * 
  */
+import mRoutesConfig from '../config/routes.config.js'
+
 class Router {
 	constructor(arg) {
 		
@@ -33,6 +35,23 @@ class Router {
 	}
 
 	back(delta) {
+		let pages = getCurrentPages()
+		console.log(pages)
+		
+		let pagename = ''
+		for(let key in mRoutesConfig){ 
+			let backtopagepath = "/" + pages[pages.length - delta - 1].route;
+			if (backtopagepath == mRoutesConfig[key].path) {
+				pagename = key;
+				break;
+			}
+		}
+		
+		console.log(pagename)
+		if (pagename != '' && (typeof mRoutesConfig[pagename].back == 'function')) {
+			mRoutesConfig[pagename].back();
+		}
+		
 		uni.navigateBack({
 			delta
 		})

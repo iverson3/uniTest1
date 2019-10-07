@@ -16,6 +16,9 @@ function HTTP(obj, config) {
 		title: '加载中',
 		mask: true
 	});
+	
+	// 这里可以当作"请求拦截器"使用
+	// 可以在请求发出之前做统一的处理
 
 	return new Promise((resolve, reject) => {
 
@@ -33,6 +36,10 @@ function HTTP(obj, config) {
 				uni.hideLoading();
 				// 状态码为200
 				if (res.statusCode == 200) {
+					
+					// 这里可以当作"响应拦截器"使用
+					// 可以对请求的响应数据做初步的统一的处理
+					
 					let data = res.data;
 					
 					// 服务器端返回的数据结构 需要修改
@@ -93,6 +100,9 @@ function HTTP(obj, config) {
 		options = { ...options,
 			...obj
 		};
+		
+		// 这里也可以当作"请求拦截器"使用
+		// 可以在请求发出之前做统一的处理
 		
 		const OPENID = uni.getStorageSync("openId");
 		if (OPENID) options["header"]["openId"] = OPENID;

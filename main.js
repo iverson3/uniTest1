@@ -84,6 +84,11 @@ $mRouter.beforeEach((navType, to) => {
 			}
 		}
 	} else {
+		console.log(to.route)
+		if (typeof to.route.before == 'function') {
+			to.route.before()
+		}
+		
 		uni[navType]({
 			url: $mUtils.objParseUrlAndParam(to.route.path, to.query)
 		})

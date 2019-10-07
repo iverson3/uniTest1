@@ -50,6 +50,16 @@
 				orderby: 'created_at'
 			}
 		},
+		// 每次页面出现，该方法都会执行 (包括uni.navigateBack()返回上个页面)
+		onShow: function() {
+			console.log('activitylist page show')
+			
+			console.log(this.$mRoutesConfig.activitylist)
+			// 这里代码还有bug  onShow()在进入页面时也会触发  需要进行判断是否是back返回的
+			if (typeof this.$mRoutesConfig.activitylist.back == 'function') {
+				this.$mRoutesConfig.activitylist.back()
+			}
+		},
 		methods: {
 			...mapMutations(['setActivityList', 'setCurActId']),
 			downCallback: function(mescroll){

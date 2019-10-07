@@ -94,6 +94,11 @@
 		onShow: function() {
 			console.log('activityinfo page show')
 			this.refreshData()
+			
+			console.log(this.$mRoutesConfig.activityinfo)
+			if (typeof this.$mRoutesConfig.activityinfo.after == 'function') {
+				this.$mRoutesConfig.activityinfo.after()
+			}
 		},
 		computed: {
 			...mapState(['activityList', 'curActid']),
@@ -182,12 +187,13 @@
 				// })
 			},
 			gotoJoin: function(id) {
-				this.$mRouter.push({
-					route:  this.$mRoutesConfig.joinactivity,
-					query: {
-						id: id
-					}
-				})
+				this.$mRouter.back(1)
+				// this.$mRouter.push({
+				// 	route:  this.$mRoutesConfig.joinactivity,
+				// 	query: {
+				// 		id: id
+				// 	}
+				// })
 			}
 		}
 	}
