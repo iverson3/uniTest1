@@ -2,6 +2,11 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			
+			this.$AppEntryController.getWeChatOpenId();
+			// #ifdef H5
+			this.$AppEntryController.handleH5BrowserAddressBarAuth();
+			// #endif
 		},
 		onShow: function() {
 			console.log('App Show')

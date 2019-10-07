@@ -62,27 +62,6 @@
 				<!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
 			</swiper-item>
 		</swiper>
-		
-	
-		<!-- 登录入口 -->
-		<view class="uni-list">
-			<view class="uni-list-cell">
-				<view class="uni-media-list">
-					<view class="uni-media-list-body">
-						<view v-if="hasLogin">
-							{{username}}
-							<view class="logout" @tap="tologout">退出登录</view>
-						</view>
-						<view v-else>
-							<navigator url="../login/login" hover-class="navigator-hover">
-								<button type="default">登录</button>
-							</navigator>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		
 	</view>
 </template>
 
@@ -175,9 +154,6 @@
 			}
 		},
 		onLoad() {
-			console.log('hasLogin: ')
-			console.log(this.hasLogin)
-			
 			/* 首页轮播图数据 */
 			this.carouselList = [{
 					id: 2,
@@ -198,7 +174,6 @@
 			this.loadMusicData('tabChange')
 		},
 		computed: {
-			...mapState(['hasLogin', 'username'])
 		},
 		methods: {
 			...mapMutations(['logout']),
@@ -242,7 +217,7 @@
 				})
 			},
 			
-			loadMusicData: function(source){
+			async loadMusicData(source){
 				// 这里是将订单挂载到tab列表下
 				let index = this.tabCurrentIndex;
 				let navItem = this.navList[index];
@@ -259,28 +234,37 @@
 				
 				navItem.loadingType = 'loading';
 		
-				this.$http.request({
-					url: '/music/getMusicList',
-					method: 'post',
-					header: {},
-					params: {
-						page: 1,
-						pagesize: 10,
-						name: '',
-						type: '',
-						level: '',
-						order: state
-					}
-				}).then(res => {
-					console.log(res)
-					var musicList = res.data.data.data
-					
-					musicList.forEach(item => {
-						navItem.musicList.push(item);
-					})
-				}).catch(err => {
-					console.log(err)
+				let paras = {
+					page: 1,
+					pagesize: 10,
+					name: '',
+					type: '',
+					level: '',
+					order: state
+				}
+				let data = await this.$apis.getMusicList(paras);
+				console.log(data)
+				
+				data.data.forEach(item => {
+					navItem.musicList.push(item);
 				})
+				
+				
+				// this.$http.request({
+				// 	url: '/music/getMusicList',
+				// 	method: 'post',
+				// 	header: {},
+				// 	params: 
+				// }).then(res => {
+				// 	console.log(res)
+				// 	var musicList = res.data.data.data
+					
+				// 	musicList.forEach(item => {
+				// 		navItem.musicList.push(item);
+				// 	})
+				// }).catch(err => {
+				// 	console.log(err)
+				// })
 				
 				//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 				this.$set(navItem, 'loaded', true);

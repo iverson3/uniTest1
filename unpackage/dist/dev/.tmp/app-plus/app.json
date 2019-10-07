@@ -8,7 +8,8 @@
     "pages/activity/activity",
     "pages/user/user",
     "pages/activityinfo/activityinfo",
-    "pages/activity/joinactivity"
+    "pages/activity/joinactivity",
+    "pages/activity/cancelactivity"
   ],
   "window": {
     "navigationBarTextStyle": "black",

@@ -141,20 +141,23 @@
 				console.log('change')
 				console.log(obj)
 				if (obj.index == 'wechat'){
-					this.$http.request({
-						url: '/activity/validateMemberByWechat',
-						method: 'post',
-						params: {wechat: obj.newData}
-					}).then(res => {
-						console.log(res)
-						if (res.data.success) {
-							this.isNeedPicOrUrl = false;
-						} else {
-							this.isNeedPicOrUrl = true;
-						}
-					}).catch(err => {
-						console.log(err)
-					})
+					
+					this.validateMemberByWechat(obj.newData)
+					
+					// this.$http.request({
+					// 	url: '/activity/validateMemberByWechat',
+					// 	method: 'post',
+					// 	params: {wechat: obj.newData}
+					// }).then(res => {
+					// 	console.log(res)
+					// 	if (res.data.success) {
+					// 		this.isNeedPicOrUrl = false;
+					// 	} else {
+					// 		this.isNeedPicOrUrl = true;
+					// 	}
+					// }).catch(err => {
+					// 	console.log(err)
+					// })
 				}
 				
 				
@@ -179,6 +182,15 @@
 							this.inputsArray.splice(5, 1);
 						}
 					}
+				}
+			},
+			async validateMemberByWechat(wechat) {
+				let res = await this.$apis.validateMemberByWechat({wechat: wechat}, {isRes: true})
+				console.log(res)
+				if (res.success) {
+					this.isNeedPicOrUrl = false;
+				} else {
+					this.isNeedPicOrUrl = true;
 				}
 			},
 			activeFc: function(res) {
@@ -225,40 +237,73 @@
 				console.log(res)
 				// console.log(JSON.stringify(res));
 				
-				this.$http.request({
-					url: '/activity/joinActivity',
-					method: 'post',
-					params: res
-				}).then(res => {
-					console.log(res)
-					if (res.data.success) {
-						uni.showToast({
-							title: "恭喜! 报名成功"
-						})
-						setTimeout(function() {
-							uni.navigateTo({
-								url: '../activityinfo/activityinfo?id=' + _this.activity_id
-							});
-						}, 600);
-					} else if (res.data.error == 'repeat') {
-						uni.showToast({
-							title: "不允许重复报名"
-						})
-					} else if (res.data.error == 'black') {
-						uni.showToast({
-							title: "你在黑名单中"
-						})
-					} else {
-						uni.showToast({
-							title: "报名失败，请稍后再试"
-						})
-					}
-				}).catch(err => {
+				this.submitForm(res)
+			},
+			async submitForm(paras) {
+				let res = await this.$apis.joinActivity(paras, {isRes: true});
+				console.log(res)
+				
+				if (res.success) {
+					uni.showToast({
+						title: "恭喜! 报名成功"
+					})
+					setTimeout(function() {
+						uni.navigateBack();
+						
+						// uni.navigateTo({
+						// 	url: '../activityinfo/activityinfo?id=' + _this.activity_id
+						// });
+					}, 600);
+				} else if (res.error == 'repeat') {
+					uni.showToast({
+						title: "不允许重复报名"
+					})
+				} else if (res.error == 'black') {
+					uni.showToast({
+						title: "你在黑名单中"
+					})
+				} else {
 					uni.showToast({
 						title: "报名失败，请稍后再试"
 					})
-					console.log(err)
-				})
+				}
+				
+				// this.$http.request({
+				// 	url: '/activity/joinActivity',
+				// 	method: 'post',
+				// 	params: res
+				// }).then(res => {
+				// 	console.log(res)
+				// 	if (res.data.success) {
+				// 		uni.showToast({
+				// 			title: "恭喜! 报名成功"
+				// 		})
+				// 		setTimeout(function() {
+				// 			uni.navigateBack();
+							
+				// 			// uni.navigateTo({
+				// 			// 	url: '../activityinfo/activityinfo?id=' + _this.activity_id
+				// 			// });
+				// 		}, 600);
+				// 	} else if (res.data.error == 'repeat') {
+				// 		uni.showToast({
+				// 			title: "不允许重复报名"
+				// 		})
+				// 	} else if (res.data.error == 'black') {
+				// 		uni.showToast({
+				// 			title: "你在黑名单中"
+				// 		})
+				// 	} else {
+				// 		uni.showToast({
+				// 			title: "报名失败，请稍后再试"
+				// 		})
+				// 	}
+				// }).catch(err => {
+				// 	uni.showToast({
+				// 		title: "网络不佳，请求失败，请稍后再试"
+				// 	})
+				// 	console.log(err)
+				// })
 			},
 			
 			isJSON: function(str) {

@@ -33,7 +33,7 @@
 		    <view class="activity-member-list">
 		        <view class="member-count">
 		            <view class="member-count-text">已报名({{memberSum}})</view>
-					<navigator class="member-count-cancel" :url="'../activity/CancelJoinActivity?id='+activityDetail.id" hover-class="navigator-hover">
+					<navigator class="member-count-cancel" :url="'../activity/cancelactivity?id='+activityDetail.id" hover-class="navigator-hover">
 						<view v-show="canJoin" class="cancel-join">取消报名>></view>
 					</navigator>
 		        </view>
@@ -50,14 +50,13 @@
 					</view>
 				</view>
 		    </view>
-		
-		    <navigator :url="'../activity/joinactivity?id='+activityDetail.id" hover-class="navigator-hover">
-		    <view class="activity-join-div" v-show="canJoin">
+	
+		    <view class="activity-join-div" v-show="canJoin" @click="gotoJoin(activityDetail.id)">
 		        <view class="activity-join">
 		            立即报名
 		        </view>
 		    </view>
-		    </navigator>
+		
 		    <view class="activity-join-div" v-show="!canJoin">
 		        <view class="activity-join canot-join">
 		            活动报名已截止
@@ -89,23 +88,12 @@
 			console.log(this.activityList)
 			console.log(this.curActid)
 			this.activityDetail = this.curActivityDetail
-			
-			let activityid = e.id;
-			if (typeof activityid == 'undefined' || activityid == 'undefined') {
-				activityid = this.curActid;
-			}
-			
-			this.$http.request({
-				url: '/activity/getMemberList',
-				method: 'post',
-				params: {id: activityid}
-			}).then(res => {
-				console.log(res)
-				this.memberList = res.data.data;
-			}).catch(err => {
-				console.log(err)
-			})
-			// this.incrementView()
+		},
+		
+		// 每次页面出现，该方法都会执行 (包括uni.navigateBack()返回上个页面)
+		onShow: function() {
+			console.log('activityinfo page show')
+			this.refreshData()
 		},
 		computed: {
 			...mapState(['activityList', 'curActid']),
@@ -160,7 +148,47 @@
 			}
 		},
 		methods: {
-			
+			async refreshData() {
+				let activityid = this.curActid;
+				
+				let res = await this.$apis.getMemberList({id: activityid});
+				console.log(res)
+				this.memberList = res;
+				
+				
+				// this.$http.request({
+				// 	url: '/activity/getMemberList',
+				// 	method: 'post',
+				// 	params: {id: activityid}
+				// }).then(res => {
+				// 	console.log(res)
+				// 	this.memberList = res.data.data;
+				// }).catch(err => {
+				// 	console.log(err)
+				// })
+				
+				let res2 = await this.$apis.incrementView({id: activityid});
+				console.log(res2)
+				
+				// 增加访问量
+				// this.$http.request({
+				// 	url: '/activity/incrementView',
+				// 	method: 'post',
+				// 	params: {id: activityid}
+				// }).then(res => {
+				// 	console.log(res)
+				// }).catch(err => {
+				// 	console.log(err)
+				// })
+			},
+			gotoJoin: function(id) {
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.joinactivity,
+					query: {
+						id: id
+					}
+				})
+			}
 		}
 	}
 </script>

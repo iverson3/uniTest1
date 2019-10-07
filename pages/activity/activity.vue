@@ -56,43 +56,68 @@
 				console.log('下拉刷新')
 				mescroll.resetUpScroll();  // 重置列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
 			},
-			upCallback: function(mescroll) {
+			async upCallback(mescroll) {
 				console.log('上拉加载更多')
 				
-				this.$http.request({
-					url: '/activity/getActivityList',
-					method: 'post',
-					params: {
-						orderby: this.orderby
-					}
-				}).then(res => {
-					console.log(res)
+				let data = await this.$apis.getActivityList({orderby: this.orderby});
+				console.log(data)
+				
+				// 接口返回的当前页数据列表 (数组)
+				let curPageData = data; 
+				let totalSize   = data.length; 
+				
+				// 设置列表数据
+				if(mescroll.num == 1) this.activityList = []; // 如果是第一页需手动置空列表
+				this.activityList = this.activityList.concat(curPageData); //追加新数据
+				
+				// 把活动列表数据添加到store
+				this.setActivityList(this.activityList)
+				
+				// 成功隐藏下拉加载状态
+				mescroll.endBySize(curPageData.length, totalSize); 
+				
+				// this.$http.request({
+				// 	url: '/activity/getActivityList',
+				// 	method: 'post',
+				// 	params: {
+				// 		orderby: this.orderby
+				// 	}
+				// }).then(res => {
+				// 	console.log(res)
 					
-					// 接口返回的当前页数据列表 (数组)
-					let curPageData = res.data.data; 
-					let totalSize   = res.data.data.length; 
+				// 	// 接口返回的当前页数据列表 (数组)
+				// 	let curPageData = res.data.data; 
+				// 	let totalSize   = res.data.data.length; 
 					
-					// 设置列表数据
-					if(mescroll.num == 1) this.activityList = []; // 如果是第一页需手动置空列表
-					this.activityList = this.activityList.concat(curPageData); //追加新数据
+				// 	// 设置列表数据
+				// 	if(mescroll.num == 1) this.activityList = []; // 如果是第一页需手动置空列表
+				// 	this.activityList = this.activityList.concat(curPageData); //追加新数据
 					
-					// 把活动列表数据添加到store
-					this.setActivityList(this.activityList)
+				// 	// 把活动列表数据添加到store
+				// 	this.setActivityList(this.activityList)
 					
-					// 成功隐藏下拉加载状态
-					mescroll.endBySize(curPageData.length, totalSize); 
-				}).catch(err => {
-					console.log(err)
-					// 失败隐藏下拉加载状态
-					mescroll.endErr()
-				})
+				// 	// 成功隐藏下拉加载状态
+				// 	mescroll.endBySize(curPageData.length, totalSize); 
+				// }).catch(err => {
+				// 	console.log(err)
+				// 	// 失败隐藏下拉加载状态
+				// 	mescroll.endErr()
+				// })
 			},
 			gotoinfo: function(e) {
 				var id = e.currentTarget.dataset.activityid;
 				this.setCurActId(id);
-				uni.navigateTo({
-					url: '../activityinfo/activityinfo?id=' + id
-				});
+				
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.activityinfo,
+					query: {
+						id: id
+					}
+				})
+				
+				// uni.navigateTo({
+				// 	url: '../activityinfo/activityinfo?id=' + id
+				// });
 			},
 		}
 	}

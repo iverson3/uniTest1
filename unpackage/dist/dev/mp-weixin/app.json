@@ -8,7 +8,8 @@
     "pages/activity/activity",
     "pages/user/user",
     "pages/activityinfo/activityinfo",
-    "pages/activity/joinactivity"
+    "pages/activity/joinactivity",
+    "pages/activity/cancelactivity"
   ],
   "subPackages": [],
   "window": {
@@ -51,6 +52,8 @@
   },
   "permission": {},
   "usingComponents": {
-    "u-link": "/components/uLink"
-  }
+    "u-link": "/components/uLink",
+    "joy-page": "/components/m-page-view/m-page-view"
+  },
+  "sitemapLocation": "sitemap96.json"
 }
