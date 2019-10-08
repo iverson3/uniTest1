@@ -67,9 +67,7 @@
 					wechat: this.searchText
 				}
 				let res = await this.$apis.searchMember(paras, {isRes: true});
-				
 				console.log(res)
-				return;
 				
 				if (res.success) {
 					this.showInfo = true
@@ -156,57 +154,58 @@
 				    content: '确定要取消本次活动的报名么',
 				    success: function (res) {
 				        if (res.confirm) {
-				            let paras = {
-							  activity_id: _this.activity_id,
-							  wechat: _this.searchText
-							}
-							
-							// 这里不能用await关键字  因为当前上下文是在一个回调函数里面
-							// let result = await _this.$apis.cancelActivity(paras, {isRes: true});
-							let result = _this.$apis.cancelActivity(paras, {isRes: true});
-							
-							console.log(result)
-							if (result.success) {
-								uni.showToast({
-									title: '取消成功'
-								});
-								setTimeout(function() {
-									uni.navigateBack();
-								}, 800);
-							} else {
-								uni.showToast({
-									title: '取消失败，请重试',
-									duration: 1000
-								});
-							}
-							
-							
-							// _this.$http.request({
-							// 	url: '/activity/cancelActivity',
-							// 	method: 'post',
-							// 	params: paras
-							// }).then(res => {
-							// 	console.log(res)
-							// 	if (res.data.success) {
-							// 		uni.showToast({
-							// 			title: '取消成功'
-							// 		});
-							// 		setTimeout(function() {
-							// 			uni.navigateBack();
-							// 		}, 800);
-							// 	} else {
-							// 		uni.showToast({
-							// 			title: '取消失败，请重试',
-							// 			duration: 1000
-							// 		});
-							// 	}
-							// }).catch(err => {
-							// 	console.log(err)
-							// })
+				            _this.cancelJoin();
 				        }
 				    }
 				});
 				
+			},
+			async cancelJoin() {
+				let paras = {
+				  activity_id: this.activity_id,
+				  wechat: this.searchText
+				}
+				
+				let result = await this.$apis.cancelActivity(paras, {isRes: true});
+				console.log(result)
+				
+				if (result.success) {
+					uni.showToast({
+						title: '取消成功'
+					});
+					setTimeout(function() {
+						uni.navigateBack();
+					}, 800);
+				} else {
+					uni.showToast({
+						title: '取消失败，请重试',
+						duration: 1000
+					});
+				}
+				
+				
+				// _this.$http.request({
+				// 	url: '/activity/cancelActivity',
+				// 	method: 'post',
+				// 	params: paras
+				// }).then(res => {
+				// 	console.log(res)
+				// 	if (res.data.success) {
+				// 		uni.showToast({
+				// 			title: '取消成功'
+				// 		});
+				// 		setTimeout(function() {
+				// 			uni.navigateBack();
+				// 		}, 800);
+				// 	} else {
+				// 		uni.showToast({
+				// 			title: '取消失败，请重试',
+				// 			duration: 1000
+				// 		});
+				// 	}
+				// }).catch(err => {
+				// 	console.log(err)
+				// })
 			}
 		}
 	}

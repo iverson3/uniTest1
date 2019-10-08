@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "曲谱",
-  "usingComponents": {
-    "w-picker": "/components/w-picker/w-picker",
-    "uni-icons": "/components/uni-icons/uni-icons",
-    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
-  }
-}

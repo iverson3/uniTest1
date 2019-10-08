@@ -1,1 +1,0 @@
-<view><inputs vue-id="1" inputsArray="{{inputsArray}}" activeName="确定报名" fontSizeScaleSet="{{fontSizeScaleSet}}" usingComponents="{{true}}" titleSet="{{titleSet}}" pickerMode="arrowhead" data-event-opts="{{[['^activeFc',[['activeFc']]],['^inputsChange',[['inputsChange']]]]}}" bind:activeFc="__e" bind:inputsChange="__e" bind:__l="__l"></inputs></view>

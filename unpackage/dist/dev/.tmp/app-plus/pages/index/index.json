@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "首页",
-  "usingComponents": {
-    "uni-grid": "/components/uni-grid/uni-grid",
-    "uni-grid-item": "/components/uni-grid/uni-grid-item",
-    "uni-load-more": "/components/uni-load-more/uni-load-more",
-    "empty": "/components/empty"
-  }
-}

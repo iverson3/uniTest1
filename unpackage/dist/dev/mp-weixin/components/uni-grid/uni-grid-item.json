@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "uni-badge": "/components/uni-grid/uni-badge"
-  },
-  "component": true
-}

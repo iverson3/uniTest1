@@ -187,13 +187,13 @@
 				// })
 			},
 			gotoJoin: function(id) {
-				this.$mRouter.back(1)
-				// this.$mRouter.push({
-				// 	route:  this.$mRoutesConfig.joinactivity,
-				// 	query: {
-				// 		id: id
-				// 	}
-				// })
+				// this.$mRouter.back(1)
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.joinactivity,
+					query: {
+						id: id
+					}
+				})
 			}
 		}
 	}

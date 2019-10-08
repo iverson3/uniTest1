@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "长列表",
-  "enablePullDownRefresh": false,
-  "bounce": "none",
-  "usingComponents": {
-    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
-  }
-}
