@@ -37,19 +37,23 @@ class Router {
 	back(delta) {
 		let pages = getCurrentPages()
 		console.log(pages)
-		
-		let pagename = ''
-		for(let key in mRoutesConfig){ 
-			let backtopagepath = "/" + pages[pages.length - delta - 1].route;
-			if (backtopagepath == mRoutesConfig[key].path) {
-				pagename = key;
-				break;
+		let index = pages.length - delta - 1;
+		// 判断数组下标是否越界
+		if (index >= 0) {
+			let backtopagepath = "/" + pages[index].route;
+			
+			let pagename = ''
+			for(let key in mRoutesConfig){ 
+				if (backtopagepath == mRoutesConfig[key].path) {
+					pagename = key;
+					break;
+				}
 			}
-		}
-		
-		console.log(pagename)
-		if (pagename != '' && (typeof mRoutesConfig[pagename].back == 'function')) {
-			mRoutesConfig[pagename].back();
+			
+			console.log(pagename)
+			if (pagename != '' && (typeof mRoutesConfig[pagename].back == 'function')) {
+				mRoutesConfig[pagename].back();
+			}
 		}
 		
 		uni.navigateBack({

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 // 导入store
 import store from './store'
-// 导入api请求封装
+// 导入api请求封装 （该request插件暂时被弃用）
 // import Request from './plugins/request/js/index'
 
 import $AppEntryController from './AppEntryController.js'
@@ -45,7 +45,7 @@ $mRouter.beforeEach((navType, to) => {
 	if (to.route === undefined) throw ("路由钩子函数中没有找到to.route对象，路由信息:" + JSON.stringify(to));
 	if (to.route.path === $mRoutesConfig.login.path && store.getters.hasLogin) {
 		uni.redirectTo({
-			url: $mUtils.objParseUrlAndParam($mRoutesConfig.main.path, to.query)
+			url: $mUtils.objParseUrlAndParam($mRoutesConfig.index.path, to.query)
 		})
 		return;
 	}
@@ -54,9 +54,12 @@ $mRouter.beforeEach((navType, to) => {
 
 	// 过滤需要权限的页面
 	if (to.route.requiresAuth) {
-
+		// 已经登录
 		if (store.getters.hasLogin) {
-			// 已经登录
+			if (typeof to.route.before == 'function') {
+				to.route.before()
+			}
+			
 			uni[navType]({
 				url: $mUtils.objParseUrlAndParam(to.route.path, to.query)
 			})

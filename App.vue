@@ -1,5 +1,13 @@
 <script>
+	import Vue from 'vue'
+	
 	export default {
+		created() {
+			// #ifdef APP-PLUS
+			plus.navigator.closeSplashscreen(); 
+			// #endif 
+		},
+		
 		onLaunch: function() {
 			console.log('App Launch')
 			
@@ -7,6 +15,43 @@
 			// #ifdef H5
 			this.$AppEntryController.handleH5BrowserAddressBarAuth();
 			// #endif
+			
+			// 获取平台系统信息 进行必要的处理
+			uni.getSystemInfo({
+				success: function(e) {
+					// #ifndef MP
+					Vue.prototype.StatusBar = e.statusBarHeight;
+					if (e.platform == 'android') {
+						Vue.prototype.CustomBar = e.statusBarHeight + 50;
+					} else {
+						Vue.prototype.CustomBar = e.statusBarHeight + 45;
+					};
+					// #endif
+					
+					// #ifdef MP-WEIXIN
+					Vue.prototype.StatusBar = e.statusBarHeight;
+					let custom = wx.getMenuButtonBoundingClientRect();
+					Vue.prototype.Custom = custom;
+					Vue.prototype.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+					// #endif		
+					
+					// #ifdef MP-ALIPAY
+					Vue.prototype.StatusBar = e.statusBarHeight;
+					Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
+					// #endif
+				}
+			})
+			
+			// 设置"未读的红点"
+			setTimeout(() => {
+				uni.setTabBarBadge({
+					index: 1,
+					text: '31'
+				});
+				uni.showTabBarRedDot({
+					index: 3
+				});
+			}, 1000);
 		},
 		onShow: function() {
 			console.log('App Show')

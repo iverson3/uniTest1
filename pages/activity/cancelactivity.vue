@@ -4,7 +4,7 @@
 		<!-- <zy-search :is-focus="false" :is-block="true" :show-want="false" @searchStart="gosearch"></zy-search> -->
 		<view class="search">
 			<!-- #ifdef APP-PLUS -->
-				<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
+				<image :src="search_icon_voice" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
 			<!-- #endif -->
 			<template v-if="isFocus">
 				<input maxlength="20" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入微信号搜索" v-model.trim="searchText"/>
@@ -12,7 +12,7 @@
 			<template v-else>
 				<input maxlength="20" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入微信号搜索" v-model.trim="searchText"/>
 			</template>
-			<image src="../../static/zy-search/search.svg" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
+			<image :src="search_icon_search" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
 		</view>
 		
 		<view v-show="showInfo" class="member-info">
@@ -41,6 +41,9 @@
 				showInfo: false,
 				showRedTip: false,
 				showCancelButton: false,
+				
+				search_icon_search: this.$mAssetsPath.search_icon_search,
+				search_icon_voice: this.$mAssetsPath.search_icon_voice,
 			}
 		},
 		onLoad: function(e) {
@@ -48,7 +51,7 @@
 			console.log(e)
 		},
 		methods: {
-			searchStart: function() {	// 触发搜索
+			async searchStart() {	// 触发搜索
 				if (this.searchText == '') {
 					uni.showToast({
 						title: '请输入微信号',
@@ -63,38 +66,67 @@
 					activity_id: this.activity_id,
 					wechat: this.searchText
 				}
-				this.$http.request({
-					url: '/activity/searchMember',
-					method: 'post',
-					params: paras
-				}).then(res => {
-					console.log(res)
-					if (res.data.success) {
-						this.showInfo = true
-						if (parseInt(res.data.data.status) === 1) {
-							this.showCancelButton = true
-							this.showRedTip = false
-						} else {
-							this.showCancelButton = false
-							this.showRedTip = true
-						}
-						this.searchResult = '以下是查询到的报名信息：';
-						this.memberInfo = res.data.data;
-								  
+				let res = await this.$apis.searchMember(paras, {isRes: true});
+				
+				console.log(res)
+				return;
+				
+				if (res.success) {
+					this.showInfo = true
+					if (parseInt(res.data.status) === 1) {
+						this.showCancelButton = true
+						this.showRedTip = false
 					} else {
-						this.searchResult = res.data.error
-						this.showInfo = false
 						this.showCancelButton = false
-						// this.searchResult = ''
-						uni.showToast({
-							title: '没有查到该微信号的报名信息',
-							icon: 'none',
-							duration: 1000
-						});
+						this.showRedTip = true
 					}
-				}).catch(err => {
-					console.log(err)
-				})
+					this.searchResult = '以下是查询到的报名信息：';
+					this.memberInfo = res.data;
+							  
+				} else {
+					this.searchResult = res.error
+					this.showInfo = false
+					this.showCancelButton = false
+					// this.searchResult = ''
+					uni.showToast({
+						title: '没有查到该微信号的报名信息',
+						icon: 'none',
+						duration: 1000
+					});
+				}
+				
+				// this.$http.request({
+				// 	url: '/activity/searchMember',
+				// 	method: 'post',
+				// 	params: paras
+				// }).then(res => {
+				// 	console.log(res)
+				// 	if (res.data.success) {
+				// 		this.showInfo = true
+				// 		if (parseInt(res.data.data.status) === 1) {
+				// 			this.showCancelButton = true
+				// 			this.showRedTip = false
+				// 		} else {
+				// 			this.showCancelButton = false
+				// 			this.showRedTip = true
+				// 		}
+				// 		this.searchResult = '以下是查询到的报名信息：';
+				// 		this.memberInfo = res.data.data;
+								  
+				// 	} else {
+				// 		this.searchResult = res.data.error
+				// 		this.showInfo = false
+				// 		this.showCancelButton = false
+				// 		// this.searchResult = ''
+				// 		uni.showToast({
+				// 			title: '没有查到该微信号的报名信息',
+				// 			icon: 'none',
+				// 			duration: 1000
+				// 		});
+				// 	}
+				// }).catch(err => {
+				// 	console.log(err)
+				// })
 					
 			},
 			startRecognize: function() {	//语音输入
@@ -108,7 +140,7 @@
 				});
 			},
 			
-			cancelClick: function() {
+		    cancelClick: function() {
 				const _this = this;
 				if (this.searchText == '') {
 					uni.showToast({
@@ -128,28 +160,49 @@
 							  activity_id: _this.activity_id,
 							  wechat: _this.searchText
 							}
-							_this.$http.request({
-								url: '/activity/cancelActivity',
-								method: 'post',
-								params: paras
-							}).then(res => {
-								console.log(res)
-								if (res.data.success) {
-									uni.showToast({
-										title: '取消成功'
-									});
-									setTimeout(function() {
-										uni.navigateBack();
-									}, 800);
-								} else {
-									uni.showToast({
-										title: '取消失败，请重试',
-										duration: 1000
-									});
-								}
-							}).catch(err => {
-								console.log(err)
-							})
+							
+							// 这里不能用await关键字  因为当前上下文是在一个回调函数里面
+							// let result = await _this.$apis.cancelActivity(paras, {isRes: true});
+							let result = _this.$apis.cancelActivity(paras, {isRes: true});
+							
+							console.log(result)
+							if (result.success) {
+								uni.showToast({
+									title: '取消成功'
+								});
+								setTimeout(function() {
+									uni.navigateBack();
+								}, 800);
+							} else {
+								uni.showToast({
+									title: '取消失败，请重试',
+									duration: 1000
+								});
+							}
+							
+							
+							// _this.$http.request({
+							// 	url: '/activity/cancelActivity',
+							// 	method: 'post',
+							// 	params: paras
+							// }).then(res => {
+							// 	console.log(res)
+							// 	if (res.data.success) {
+							// 		uni.showToast({
+							// 			title: '取消成功'
+							// 		});
+							// 		setTimeout(function() {
+							// 			uni.navigateBack();
+							// 		}, 800);
+							// 	} else {
+							// 		uni.showToast({
+							// 			title: '取消失败，请重试',
+							// 			duration: 1000
+							// 		});
+							// 	}
+							// }).catch(err => {
+							// 	console.log(err)
+							// })
 				        }
 				    }
 				});

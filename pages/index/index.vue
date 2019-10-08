@@ -110,6 +110,7 @@
 					},
 				],
 				
+				// 这部分数据也可以通过api接口从服务器端获取
 				cateList: [{
 						cateid: 1,
 						url: 'https://img-cdn-qiniu.dcloud.net.cn/uni-ui/grid-1.png',
@@ -153,19 +154,22 @@
 				]
 			}
 		},
-		onLoad() {
+				
+		async onLoad(query) {
+			await this.$AppEntryController.main(query);
+			
 			/* 首页轮播图数据 */
 			this.carouselList = [{
 					id: 2,
-					src: "/static/swiper/1.jpg"
+					src: this.$mAssetsPath.index_swiper_1
 				},
 				{
 					id: 3,
-					src: "/static/swiper/2.jpg",
+					src: this.$mAssetsPath.index_swiper_2
 				},
 				{
 					id: 5,
-					src: "/static/swiper/3.jpg"
+					src: this.$mAssetsPath.index_swiper_3
 				}
 			];
 			this.swiperLength = this.carouselList.length;

@@ -5,7 +5,7 @@
 			<!-- <zy-search :is-focus="false" :is-block="true" :show-want="false" @searchStart="gosearch"></zy-search> -->
 			<view class="search">
 				<!-- #ifdef APP-PLUS -->
-					<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
+					<image :src="search_icon_voice" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>
 				<!-- #endif -->
 				<template v-if="isFocus">
 					<input maxlength="20" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
@@ -13,7 +13,7 @@
 				<template v-else>
 					<input maxlength="20" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词搜索" v-model.trim="searchText"/>
 				</template>
-				<image src="../../static/zy-search/search.svg" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
+				<image :src="search_icon_search" mode="aspectFit" @click="searchStart()" class="search-icon"></image>
 			</view>
 			
 			<!-- picker选择器 -->
@@ -86,6 +86,8 @@
 </template>
 
 <script>
+	// zy-search作者封装的这个search component 不太好用，或者说不太符合我的需求，所以暂时弃用
+	// 然后自己对着他的代码进行自己的代码改写
 	// import zySearch from '@/components/zy-search/zy-search.vue'
 	import wPicker from "@/components/w-picker/w-picker.vue";
 	import uniIcons from "@/components/uni-icons/uni-icons.vue";
@@ -102,6 +104,9 @@
 			return {
 				searchText:'',		
 				isFocus: false,
+				
+				search_icon_search: this.$mAssetsPath.search_icon_search,
+				search_icon_voice: this.$mAssetsPath.search_icon_voice,
 				
 				selectList: [
 					{default: '类型', ref: 'typeselector'},
@@ -255,7 +260,7 @@
 				this.getData()
 			},
 			
-			getData: function() {
+			async getData() {
 				let type = (this.type == '全部' || this.type == '类型')? '' : this.type
 				let level = (this.level == '全部' || this.level == '难度')? '' : this.level
 				let sort = (this.sort == '排序')? 'mix' : this.sort
@@ -266,47 +271,78 @@
 					}
 				}
 				
+				let paras = {
+					page: this.page,
+					pagesize: this.upOption.page.size,
+					name: this.searchText,
+					type: type,
+					level: level,
+					order: sort
+				};
+				let data = await this.$apis.getMusicList(paras);
+				console.log(data)
+				
+				let curPageData = data.data; 
+				let totalSize   = data.total; 
+				
+				// 如果是第一页 则置空列表数据
+				if(this.page == 1) {
+					this.musicList = [];
+				}   
+				this.musicList = this.musicList.concat(curPageData); // 追加新数据
+				
+				if (this.mescroll) {
+					// 成功隐藏下拉加载状态
+					this.mescroll.endBySize(curPageData.length, totalSize); 
+				}
+				// 判断是否还有下一页
+				if (data.last_page > this.page) {
+					this.page = this.page + 1;
+				}
+				
+				
+				
 				// 根据页面选择的条件 调用api从服务器端获取数据
-				this.$http.request({
-					url: '/music/getMusicList',
-					method: 'post',
-					header: {},
-					params: {
-						page: this.page,
-						pagesize: this.upOption.page.size,
-						name: this.searchText,
-						type: type,
-						level: level,
-						order: sort
-					}
-				}).then(res => {
-					console.log(res)
-					let data = res.data.data;
-					let curPageData = data.data; 
-					let totalSize   = data.total; 
+				// this.$http.request({
+				// 	url: '/music/getMusicList',
+				// 	method: 'post',
+				// 	header: {},
+				// 	params: {
+				// 		page: this.page,
+				// 		pagesize: this.upOption.page.size,
+				// 		name: this.searchText,
+				// 		type: type,
+				// 		level: level,
+				// 		order: sort
+				// 	}
+				// }).then(res => {
+				// 	console.log(res)
+				// 	let data = res.data.data;
+				// 	let curPageData = data.data; 
+				// 	let totalSize   = data.total; 
 					
-					// 如果是第一页 则置空列表数据
-					if(this.page == 1) {
-						this.musicList = [];
-					}   
-					this.musicList = this.musicList.concat(curPageData); // 追加新数据
+				// 	// 如果是第一页 则置空列表数据
+				// 	if(this.page == 1) {
+				// 		this.musicList = [];
+				// 	}   
+				// 	this.musicList = this.musicList.concat(curPageData); // 追加新数据
 					
-					if (this.mescroll) {
-						// 成功隐藏下拉加载状态
-						this.mescroll.endBySize(curPageData.length, totalSize); 
-					}
+				// 	if (this.mescroll) {
+				// 		// 成功隐藏下拉加载状态
+				// 		this.mescroll.endBySize(curPageData.length, totalSize); 
+				// 	}
 					
-					// 判断是否还有下一页
-					if (data.last_page > this.page) {
-						this.page = this.page + 1;
-					}
-				}).catch(err => {
-					if (this.mescroll) {
-						// 失败隐藏下拉加载状态
-						this.mescroll.endErr()
-					}
-					console.log(err)
-				})
+				// 	// 判断是否还有下一页
+				// 	if (data.last_page > this.page) {
+				// 		this.page = this.page + 1;
+				// 	}
+				// }).catch(err => {
+				// 	if (this.mescroll) {
+				// 		// 失败隐藏下拉加载状态
+				// 		this.mescroll.endErr()
+				// 	}
+				// 	console.log(err)
+				// })
 			},
 			
 			searchStart: function() {	// 触发搜索

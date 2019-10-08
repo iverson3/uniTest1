@@ -54,6 +54,5 @@
   "usingComponents": {
     "u-link": "/components/uLink",
     "joy-page": "/components/m-page-view/m-page-view"
-  },
-  "sitemapLocation": "sitemap53.json"
+  }
 }

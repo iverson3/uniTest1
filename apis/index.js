@@ -4,6 +4,8 @@ import config from "@/config/index.config.js";
 
 export const getMusicList = (data) => http.POST(`${config.baseUrl}/music/getMusicList`, data);
 
+export const getDetail = (data) => http.POST(`${config.baseUrl}/music/getDetail`, data);
+
 export const getActivityList = (data) => http.POST(`${config.baseUrl}/activity/getActivityList`, data);
 
 export const validateMemberByWechat = (data, conf) => http.POST(`${config.baseUrl}/activity/validateMemberByWechat`, data, conf);
@@ -13,6 +15,11 @@ export const joinActivity = (data, conf) => http.POST(`${config.baseUrl}/activit
 export const getMemberList = (data) => http.POST(`${config.baseUrl}/activity/getMemberList`, data);
 
 export const incrementView = (data) => http.POST(`${config.baseUrl}/activity/incrementView`, data);
+
+export const searchMember = (data, conf) => http.POST(`${config.baseUrl}/activity/searchMember`, data, conf);
+
+export const cancelActivity = (data, conf) => http.POST(`${config.baseUrl}/activity/cancelActivity`, data, conf);
+
 
 
 

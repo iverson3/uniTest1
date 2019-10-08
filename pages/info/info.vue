@@ -22,26 +22,33 @@
 			this.getData()
 		},
 		methods: {
-			getData: function() {
-				uni.showLoading({
-					title: "加载中..."
-				})
-				this.$http.request({
-				    url: '/music/getDetail',
-				    method: 'post',
-				    header: {},
-				    params: {
-						id: this.newsid
-				    }
-				}).then(res => {
-					uni.hideLoading()
-					console.log(res.data.success)
-					console.log(res.data.data)
-					this.info = res.data.data
-				}).catch(err => {
-					uni.hideLoading()
-					console.log(err)
-				})
+			async getData() {
+				// uni.showLoading({
+				// 	title: "加载中..."
+				// })
+				
+				let res = await this.$apis.getDetail({id: this.newsid});
+				console.log(res)
+				
+				this.info = res;
+				
+				
+				
+				// this.$http.request({
+				//     url: '/music/getDetail',
+				//     method: 'post',
+				//     header: {},
+				//     params: {
+				// 		id: this.newsid
+				//     }
+				// }).then(res => {
+				// 	uni.hideLoading()
+				// 	console.log(res.data.data)
+				// 	this.info = res.data.data
+				// }).catch(err => {
+				// 	uni.hideLoading()
+				// 	console.log(err)
+				// })
 			}
 		}
 	}

@@ -117,7 +117,7 @@
 						ignore: false
 					}],
 					border_bottom: "1px solid #f2f2f2",
-					clearColor: "#c0ebd7",
+					clearColor: "red",
 					hide: false,
 					customId: "imgBlob"
 				},
