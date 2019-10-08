@@ -183,18 +183,26 @@
 			...mapMutations(['logout']),
 			gotoinfo: function(e) {
 				var newsid = e.currentTarget.dataset.newsid;
-				uni.navigateTo({
-					url: '../info/info?newsid=' + newsid,
-					success: res => {
-						console.log('gotoinfo success')
-					},
-					fail: () => {
-						console.log('gotoinfo fail')
-					},
-					complete: () => {
-						console.log('gotoinfo complete')
+				
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.musicinfo,
+					query: {
+						newsid: newsid
 					}
-				});
+				})
+				
+				// uni.navigateTo({
+				// 	url: '../info/info?newsid=' + newsid,
+				// 	success: res => {
+				// 		console.log('gotoinfo success')
+				// 	},
+				// 	fail: () => {
+				// 		console.log('gotoinfo fail')
+				// 	},
+				// 	complete: () => {
+				// 		console.log('gotoinfo complete')
+				// 	}
+				// });
 			},
 			tologout: function() {
 				// 退出登录后不需要显示的刷新页面，因为退出登录成功后 state改变 页面会自动重新加载
@@ -204,9 +212,9 @@
 			
 			clickGrid: function(e) {
 				var index = e.detail.index;
-				uni.navigateTo({
-					url: "/pages/info/info?newsid=" + this.cateList[index].cateid
-				});
+				// uni.navigateTo({
+				// 	url: "/pages/info/info?newsid=" + this.cateList[index].cateid
+				// });
 			},
 			
 			swiperChange: function(e) {
@@ -215,9 +223,11 @@
 			},
 			navToDetailPage: function(item) {
 				console.log(item)
-				let id = item.id;
-				uni.navigateTo({
-					url: `/pages/info/info?newsid=${id}`
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.musicinfo,
+					query: {
+						newsid: item.id
+					}
 				})
 			},
 			

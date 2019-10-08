@@ -376,18 +376,25 @@
 			
 			gotoinfo: function(e) {
 				var newsid = e.currentTarget.dataset.newsid;
-				uni.navigateTo({
-					url: '../info/info?newsid=' + newsid,
-					success: res => {
-						console.log('gotoinfo success')
-					},
-					fail: () => {
-						console.log('gotoinfo fail')
-					},
-					complete: () => {
-						console.log('gotoinfo complete')
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.musicinfo,
+					query: {
+						newsid: newsid
 					}
-				});
+				})
+				
+				// uni.navigateTo({
+				// 	url: '../info/info?newsid=' + newsid,
+				// 	success: res => {
+				// 		console.log('gotoinfo success')
+				// 	},
+				// 	fail: () => {
+				// 		console.log('gotoinfo fail')
+				// 	},
+				// 	complete: () => {
+				// 		console.log('gotoinfo complete')
+				// 	}
+				// });
 			},
 		}
 	}

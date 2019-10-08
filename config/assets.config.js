@@ -36,7 +36,7 @@ export default {
 	no_order_1: PATH + "/noOrder.png",
 
 	// fail提示图
-	fail_icon: PATH + "/pay_unopen.png",
+	// fail_icon: PATH + "/pay_unopen.png",
 	
 	// 注册成功icon图
 	regSuccessIcon:PATH + "/succ.jpg",

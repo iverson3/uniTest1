@@ -15,7 +15,8 @@ const CONFIG = {
         production: {
                 loginTitleTxt: "ukuhub", // 登录页标题
                 copyrightTxt: "ukuhub v1.0", // 版本信息
-                assetsPath: "https://web.ukuhub.com/img", // 静态资源路径
+                // assetsPath: "https://web.ukuhub.com/img", // 静态资源路径
+				assetsPath: "/static",
                 baseUrl: "https://web.ukuhub.com/api",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId

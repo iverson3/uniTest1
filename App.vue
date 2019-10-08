@@ -3,6 +3,8 @@
 	
 	export default {
 		created() {
+			// 如果manifest配置文件中 autoclose未设置为true
+			// 则需要在应用中显式的调用closeSplashscreen()方法 关闭程序启动界面
 			// #ifdef APP-PLUS
 			plus.navigator.closeSplashscreen(); 
 			// #endif 
@@ -46,7 +48,11 @@
 			setTimeout(() => {
 				uni.setTabBarBadge({
 					index: 1,
-					text: '31'
+					text: '16'
+				});
+				uni.setTabBarBadge({
+					index: 2,
+					text: '1'
 				});
 				uni.showTabBarRedDot({
 					index: 3

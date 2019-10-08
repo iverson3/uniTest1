@@ -19,6 +19,7 @@ function HTTP(obj, config) {
 	
 	// 这里可以当作"请求拦截器"使用
 	// 可以在请求发出之前做统一的处理
+	console.log('请求拦截处111')
 
 	return new Promise((resolve, reject) => {
 
@@ -39,6 +40,7 @@ function HTTP(obj, config) {
 					
 					// 这里可以当作"响应拦截器"使用
 					// 可以对请求的响应数据做初步的统一的处理
+					console.log('响应拦截处')
 					
 					let data = res.data;
 					
@@ -103,6 +105,7 @@ function HTTP(obj, config) {
 		
 		// 这里也可以当作"请求拦截器"使用
 		// 可以在请求发出之前做统一的处理
+		console.log('请求拦截处222')
 		
 		const OPENID = uni.getStorageSync("openId");
 		if (OPENID) options["header"]["openId"] = OPENID;

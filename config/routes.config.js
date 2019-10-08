@@ -18,7 +18,7 @@ export default {
 	// 权限路由
 	activityinfo: {
 		name: "活动详情",
-		path: "/pages/activityinfo/activityinfo",
+		path: "/pages/subactivity/activityinfo/activityinfo",
 		requiresAuth: false,
 		before: function() {
 			console.log('goto activityinfo before')
@@ -34,7 +34,7 @@ export default {
 	},
 	joinactivity: {
 		name: "活动报名",
-		path: "/pages/activity/joinactivity",
+		path: "/pages/subactivity/activity/joinactivity",
 		requiresAuth: false
 	},
 	
@@ -45,7 +45,7 @@ export default {
 	},
 	login: {
 		name: "登录",
-		path: "/pages/login/login",
+		path: "/pages/subuser/login/login",
 		before: function() {
 			console.log('goto login before')
 		},
@@ -63,6 +63,10 @@ export default {
 	musiclist: {
 		name: "曲谱中心",
 		path: "/pages/music/music"
+	},
+	musicinfo: {
+		name: "曲谱详情",
+		path: "/pages/submusic/info/info"
 	},
 	// index: {
 	// 	name: "推荐注册",
@@ -87,56 +91,56 @@ export default {
 	
 	
 	
-	promoCode: {
-		name: "我的推广码",
-		path: "/pages/user/promoCode",
-		requiresAuth: true
-	},
-	tradeDetail: {
-		name: "交易详细",
-		path: "/pages/trade/tradeDetail",
-		requiresAuth: true
-	},
-	tradeHistory: {
-		name: "交易记录",
-		path: "/pages/trade/tradeHistory",
-		requiresAuth: true
-	},
-	user: {
-		name: "个人中心",
-		path: "/pages/user/user",
-		requiresAuth: true
-	},
-	userInfo: {
-		name: "基本信息",
-		path: "/pages/user/userInfo",
-		requiresAuth: true
-	},
-	uUserInfo: {
-		name: "修改基本信息",
-		path: "/pages/user/uUserInfo",
-		requiresAuth: true
-	},
-	ccList: {
-		name: "信用卡管理",
-		path: "/pages/cc/ccList",
-		requiresAuth: true
-	},
-	ccDetail: {
-		name: "信用卡详情",
-		path: "/pages/cc/ccDetail",
-		requiresAuth: true
-	},
-	ccAdd: {
-		name: "添加信用卡",
-		path: "/pages/cc/ccAdd",
-		requiresAuth: true
-	},
-	trade: {
-		name: "商户收款",
-		path: "/pages/trade/trade",
-		requiresAuth: true
-	},
+	// promoCode: {
+	// 	name: "我的推广码",
+	// 	path: "/pages/user/promoCode",
+	// 	requiresAuth: true
+	// },
+	// tradeDetail: {
+	// 	name: "交易详细",
+	// 	path: "/pages/trade/tradeDetail",
+	// 	requiresAuth: true
+	// },
+	// tradeHistory: {
+	// 	name: "交易记录",
+	// 	path: "/pages/trade/tradeHistory",
+	// 	requiresAuth: true
+	// },
+	// user: {
+	// 	name: "个人中心",
+	// 	path: "/pages/user/user",
+	// 	requiresAuth: true
+	// },
+	// userInfo: {
+	// 	name: "基本信息",
+	// 	path: "/pages/user/userInfo",
+	// 	requiresAuth: true
+	// },
+	// uUserInfo: {
+	// 	name: "修改基本信息",
+	// 	path: "/pages/user/uUserInfo",
+	// 	requiresAuth: true
+	// },
+	// ccList: {
+	// 	name: "信用卡管理",
+	// 	path: "/pages/cc/ccList",
+	// 	requiresAuth: true
+	// },
+	// ccDetail: {
+	// 	name: "信用卡详情",
+	// 	path: "/pages/cc/ccDetail",
+	// 	requiresAuth: true
+	// },
+	// ccAdd: {
+	// 	name: "添加信用卡",
+	// 	path: "/pages/cc/ccAdd",
+	// 	requiresAuth: true
+	// },
+	// trade: {
+	// 	name: "商户收款",
+	// 	path: "/pages/trade/trade",
+	// 	requiresAuth: true
+	// },
 
 	// // 非权限路由
 	// main: {

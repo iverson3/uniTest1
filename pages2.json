@@ -6,12 +6,34 @@
 				"navigationBarTitleText": "首页"
 			}
 		}
-		,{
-		    "path" : "pages/music/music",
-		    "style" : {
-		    	"navigationBarTitleText": "曲谱"
-		    }
-		}
+	    ,{
+            "path" : "pages/info/info",
+            "style" : {
+				"navigationBarTitleText": "曲谱详情"
+			}
+        }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {
+				"navigationBarTitleText": "登录"
+			}
+        }
+        ,{
+            "path" : "pages/list/list",
+            "style" : {
+				"navigationBarTitleText": "长列表",
+				"enablePullDownRefresh" : false,  // 不开启下拉刷新, 默认就是false
+				"app-plus" : {
+					"bounce" : "none" // 取消iOS回弹,避免和下拉刷新冲突 (小程序无法取消, 点此查看H5端的取消方法... )
+				}
+			}
+        }
+        ,{
+            "path" : "pages/music/music",
+            "style" : {
+            	"navigationBarTitleText": "曲谱"
+            }
+        }
 		,{
 		    "path" : "pages/activity/activity",
 		    "style" : {
@@ -24,73 +46,25 @@
 		    	"navigationBarTitleText": "用户中心"
 		    }
 		}
+        ,{
+            "path" : "pages/activityinfo/activityinfo",
+            "style" : {
+				"navigationBarTitleText": "活动详情"
+			}
+        }
+        ,{
+            "path" : "pages/activity/joinactivity",
+            "style" : {
+				"navigationBarTitleText": "活动报名"
+			}
+        }
+        ,{
+            "path" : "pages/activity/cancelactivity",
+            "style" : {
+				"navigationBarTitleText": "取消活动报名"
+			}
+        }
     ],
-	// 此配置为小程序的分包加载机制。在5+App里始终为整包
-	// 微信、百度小程序每个分包的大小是2M，总体积一共不能超过8M
-	// 注意： tabBar list列表里面的页面不能加到分包里面
-	"subPackages": [
-		{
-			"root": "pages/subindex",
-			"pages": [
-				{
-				    "path" : "list/list",
-				    "style" : {
-						"navigationBarTitleText": "长列表",
-						"enablePullDownRefresh" : false,  // 不开启下拉刷新, 默认就是false
-						"app-plus" : {
-							"bounce" : "none" // 取消iOS回弹,避免和下拉刷新冲突 (小程序无法取消, 点此查看H5端的取消方法... )
-						}
-					}
-				}
-			]
-		},
-		{
-			"root": "pages/submusic",
-			"pages": [
-				{
-				    "path" : "info/info",
-				    "style" : {
-						"navigationBarTitleText": "曲谱详情"
-					}
-				}
-			]
-		},
-		{
-			"root": "pages/subactivity",
-			"pages": [
-				{
-				    "path" : "activityinfo/activityinfo",
-				    "style" : {
-						"navigationBarTitleText": "活动详情"
-					}
-				}
-				,{
-				    "path" : "activity/joinactivity",
-				    "style" : {
-						"navigationBarTitleText": "活动报名"
-					}
-				}
-				,{
-				    "path" : "activity/cancelactivity",
-				    "style" : {
-						"navigationBarTitleText": "取消活动报名"
-					}
-				}
-			]
-			
-		},
-		{
-			"root": "pages/subuser",
-			"pages": [
-				{
-				    "path" : "login/login",
-				    "style" : {
-						"navigationBarTitleText": "登录"
-					}
-				}
-			]
-		}
-	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "index",
@@ -139,7 +113,7 @@
 			},
 			{
 				"name": "info", // 模式名称
-				"path": "pages/submusic/info/info", // 启动页面
+				"path": "pages/info/info", // 启动页面
 				"query": "newsid=2" // 页面参数 在页面的onLoad函数里面得到
 			},
 			{
@@ -154,7 +128,7 @@
 			},
 			{
 				"name": "activityinfo", // 模式名称
-				"path": "pages/subactivity/activityinfo/activityinfo", // 启动页面
+				"path": "pages/activityinfo/activityinfo", // 启动页面
 				"query": "id=14" // 页面参数 在页面的onLoad函数里面得到
 			}
 		]
