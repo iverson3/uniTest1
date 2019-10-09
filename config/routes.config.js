@@ -19,7 +19,7 @@ export default {
 	activityinfo: {
 		name: "活动详情",
 		path: "/pages/subactivity/activityinfo/activityinfo",
-		requiresAuth: false,
+		requiresAuth: true,
 		before: function() {
 			console.log('goto activityinfo before')
 			console.log(store)

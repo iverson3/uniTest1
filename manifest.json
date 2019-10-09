@@ -54,8 +54,12 @@
             "sdkConfigs" : {
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "xxxxxx",
-                        "appsecret" : "xxxxxxxxxxxxx"
+						"appid" : "xxxxxxxxxxxxxxx",
+						"appsecret" : "xxxxxxxxxxxxxxxxxxxxx"
+						// 开发阶段没法使用自己的账号信息 
+						// 直接像上面一样随便填,因为开发阶段使用的是Dcloud默认提供的账号信息
+                        // "appid" : "wx5fe2e9e859558af5",
+                        // "appsecret" : "5b2545d9461c08ed6d9ad5ea0476630c"
                     }
                 },
                 "payment" : {}

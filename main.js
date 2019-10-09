@@ -67,6 +67,7 @@ $mRouter.beforeEach((navType, to) => {
 			// 登录成功后的重定向地址和参数
 			let query = {
 				redirectUrl: to.route.path,
+				redirectName: to.route.name,
 				...to.query
 			}
 			// 没有登录 是否强制登录?
@@ -87,10 +88,14 @@ $mRouter.beforeEach((navType, to) => {
 			}
 		}
 	} else {
+		console.log(to)
 		console.log(to.route)
 		if (typeof to.route.before == 'function') {
 			to.route.before()
 		}
+		
+		console.log(navType)
+		console.log($mUtils.objParseUrlAndParam(to.route.path, to.query))
 		
 		uni[navType]({
 			url: $mUtils.objParseUrlAndParam(to.route.path, to.query)

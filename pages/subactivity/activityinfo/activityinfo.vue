@@ -88,6 +88,8 @@
 			console.log(this.activityList)
 			console.log(this.curActid)
 			this.activityDetail = this.curActivityDetail
+			
+			console.log(getCurrentPages())
 		},
 		
 		// 每次页面出现，该方法都会执行 (包括uni.navigateBack()返回上个页面)

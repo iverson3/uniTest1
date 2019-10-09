@@ -1,9 +1,9 @@
 <template>
 	<view class="center">
 		<view class="logo" @click="goLogin" :hover-class="!hasLogin ? 'logo-hover' : ''">
-			<image class="logo-img" :src="hasLogin ? userInfo.avatarUrl :avatarUrl"></image>
+			<image class="logo-img" :src="hasLogin ? userInfo.avatarUrl : avatarUrl"></image>
 			<view class="logo-title">
-				<text class="uer-name">Hi，{{hasLogin ? userInfo.name : '您未登录'}}</text>
+				<text class="uer-name">Hi，{{hasLogin ? userInfo.nickName : '您未登录'}}</text>
 				<text class="go-login navigat-arrow" v-if="!hasLogin">&#xe65e;</text>
 			</view>
 		</view>
@@ -49,6 +49,11 @@
 				<text class="list-text">关于应用</text>
 				<text class="navigat-arrow">&#xe65e;</text>
 			</view>
+			<view class="center-list-item" @click="logout()">
+				<text class="list-icon">&#xe614;</text>
+				<text class="list-text">退出登录</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -56,7 +61,8 @@
 <script>
 	import {
 		mapState,
-		mapGetters
+		mapGetters,
+		mapMutations
 	} from 'vuex'
 	
 	export default {
@@ -75,16 +81,22 @@
 			...mapGetters(['hasLogin']),
 		},
 		methods: {
+			...mapMutations(['SET_LOGOUT']),
 			goLogin() {
 				if (!this.hasLogin) {
 					this.$mRouter.push({
 						route:  this.$mRoutesConfig.login,
 						query: {
-							redirectUrl: this.$mRoutesConfig.user
+							redirectUrl: this.$mRoutesConfig.user.path,
+							redirectName: this.$mRoutesConfig.user.name
 						}
 					})
 				}
-			}
+			},
+			
+			logout: function() {
+				this.SET_LOGOUT()
+			},
 		}
 	}
 </script>

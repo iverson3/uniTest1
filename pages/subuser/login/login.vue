@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="input-group">
+	<!-- 	<view class="input-group">
 		    <view class="input-row border">
 		        <text class="title">账号</text>
 		        <input type="text" v-model="account" placeholder="请输入账号">
@@ -12,17 +12,22 @@
 		</view>
 		<view class="btn-row">
 		    <button type="primary" class="primary" @tap="bindLogin">登录</button>
-		</view>
+		</view> -->
+		
 		<view class="btn-row">
 		    <!-- #ifdef MP-WEIXIN -->
 		    <button type="primary" open-type="getUserInfo" @getuserinfo="getuserinfo" withCredentials="true">微信登录</button>
 		    <!-- #endif -->
+			
+			<!-- #ifdef APP-PLUS -->
+			<button type="primary" @click="appWxLogin()">微信登录</button>
+			<!-- #endif -->
 		</view>
-		<view class="action-row">
+		<!-- <view class="action-row">
 		    <navigator url="../register/register">注册账号</navigator>
 		    <text>|</text>
 		    <navigator url="../password/password">忘记密码</navigator>
-		</view> 
+		</view> -->
 	</view>
 </template>
 
@@ -44,23 +49,28 @@
 		},
 		computed: {
 			...mapGetters(['hasLogin']),
-			...mapState(['openId', 'userinfo']),
+			...mapState(['openId', 'userInfo']),
 		},
 		onLoad: function(query) {
 			this.initredirectRouteData(query);
 		},
 		methods: {
-			...mapMutations(['SET_USERINFO', 'SET_OPENID']),
+			...mapMutations(['SET_USERINFO', 'SET_OPENID', 'SET_TOKEN']),
 			initredirectRouteData: function(query) {
+				console.log('query')
+				console.log(query)
 				if (query.redirectUrl) {
 					this.redirectRoute.path = query.redirectUrl;
+					this.redirectRoute.name = query.redirectName;
 					delete query.redirectUrl;
+					delete query.redirectName;
 					this.routeQuery = query;
 				} else {
 					this.routeQuery = query;
 				}
 			},
 			
+			// 微信小程序端使用微信授权登录的处理代码
 			getuserinfo: function(res) {
 				const _this = this;
 				console.log(res)
@@ -75,24 +85,16 @@
 				// 设置userinfo到store
 				this.SET_USERINFO(res.detail.userInfo)
 				
+				// 调用微信login接口 获取登录凭证code
+				// 再调用服务器api接口 发送code过去，服务器端使用code调用微信登录凭证校验接口
+				// 成功后服务器端将微信接口返回的openid(unionid)和session_key 返回给前端
 				uni.login({
 					provider: 'weixin',
 					success: function (loginRes) {
 						console.log(loginRes);
 						
-						// 有了code之后调用服务器端接口获取sessionkey (服务器端调用微信接口获取并返回给前端)
-						let code = loginRes.code;
-						_this.getSessionKey(code);
-			
-						
-						// 获取用户信息
-						uni.getUserInfo({
-						    provider: 'weixin',
-						    success: function (infoRes) {
-								console.log(infoRes)
-								console.log('用户昵称为：' + infoRes.userInfo.nickName);
-						    }
-						});
+						// 有了code之后调用服务器端接口获取openid和session_key (服务器端调用微信接口获取并返回给前端)
+						_this.getSessionKey(loginRes.code);				
 					}
 				});
 				
@@ -102,12 +104,82 @@
 				console.log(res)
 				if (res) {
 					this.SET_OPENID(res.openid)
+					this.SET_TOKEN(res.openid)
+					
+					// 登录成功之后 跳转到过来的页面
+					this.jumptopre()
 				} else {
 					uni.showToast({
 						title: '从服务器端获取sessionkey失败',
 					});
 				}
 			},
+			
+			// app端使用微信授权登录的处理代码
+			appWxLogin: function() {
+				const _this = this;
+				// 获取服务提供商列表
+				uni.getProvider({
+				    service: 'oauth',
+				    success: function (res) {
+				        console.log(res)
+						console.log(res.provider)
+						// 判断用户手机上是否安装有微信客户端
+				        if (~res.provider.indexOf('weixin')) {
+				            uni.login({
+				                provider: 'weixin',
+				                success: function (loginRes) {
+									console.log('userinfo')
+				                    console.log(JSON.stringify(loginRes));
+									
+									// 获取微信用户信息
+									uni.getUserInfo({
+									    provider: 'weixin',
+									    success: function (infoRes) {
+									        // console.log(infoRes.userInfo);
+											_this.SET_TOKEN(infoRes.userInfo.openId)
+											_this.SET_OPENID(infoRes.userInfo.openId)
+											delete infoRes.userInfo.openId;
+											delete infoRes.userInfo.unionId;
+											_this.SET_USERINFO(infoRes.userInfo)
+											
+											// 登录成功之后 跳转到过来的页面
+											_this.jumptopre()
+									    }
+									});
+				                }
+				            });
+				        } else {
+							uni.showToast({
+								title: '手机上没有微信客户端',
+							});
+						}
+				    }
+				});
+			},
+			jumptopre: function() {
+				let tabBarPages = [
+					"/pages/index/index",
+					"/pages/music/music",
+					"/pages/activity/activity",
+					"/pages/user/user"
+				];
+				let index = tabBarPages.indexOf(this.redirectRoute.path);
+				
+				console.log(getCurrentPages())
+				
+				if (index === false || index === -1) {
+					this.$mRouter.redirectTo({
+						route: this.redirectRoute,
+						query: this.routeQuery
+					});
+				} else {
+					this.$mRouter.back(1)
+				}
+				
+			},
+			
+			
 			bindLogin: function() {
 				uni.showToast({
 					icon: 'none',
