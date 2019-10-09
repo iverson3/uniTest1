@@ -4,7 +4,8 @@ const CONFIG = {
                 loginTitleTxt: "ukuhub", // 登录页标题
                 copyrightTxt: "ukuhub v1.0", // 版本信息
                 assetsPath: "/static", // 静态资源路径
-                baseUrl: "https://web.ukuhub.com/api",
+                // baseUrl: "https://web.ukuhub.com/api",
+				baseUrl: "http://127.0.0.1:8000/api",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。

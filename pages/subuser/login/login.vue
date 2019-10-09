@@ -13,6 +13,11 @@
 		<view class="btn-row">
 		    <button type="primary" class="primary" @tap="bindLogin">登录</button>
 		</view>
+		<view class="btn-row">
+		    <!-- #ifdef MP-WEIXIN -->
+		    <button type="primary" open-type="getUserInfo" @getuserinfo="getuserinfo" withCredentials="true">微信登录</button>
+		    <!-- #endif -->
+		</view>
 		<view class="action-row">
 		    <navigator url="../register/register">注册账号</navigator>
 		    <text>|</text>
@@ -22,66 +27,94 @@
 </template>
 
 <script>
-	import {mapState, mapMutations} from 'vuex';
+	import {mapState, mapGetters, mapMutations} from 'vuex';
+	import graceChecker from '@/common/graceChecker.js'
+	import formRuleConfig from '@/config/formRule.config.js'
 	
 	export default {
 		data() {
 			return {
 				account: '',
-				password: ''
+				password: '',
+				
+				// 登录成功之后 默认跳转的地址
+				redirectRoute: this.$mRoutesConfig.index,
+				routeQuery: {},
 			}
 		},
+		computed: {
+			...mapGetters(['hasLogin']),
+			...mapState(['openId', 'userinfo']),
+		},
+		onLoad: function(query) {
+			this.initredirectRouteData(query);
+		},
 		methods: {
-			...mapMutations(['login']),
-			bindLogin: function() {
-				this.$http.request({
-					url: '/music/getDetail',
-					method: 'post',
-					params: {
-						id: 3
-					}
-				}).then(res => {
-					console.log(res)
-					
-					var userinfo = {
-						username: this.account,
-						password: 'www',
-						userImg: './static/logo.png'
-					}
-					if (this.password === userinfo.password) {
-						this.toLogin(userinfo)
-					} else{
-						uni.showToast({
-							icon: 'none',
-							title: '用户账号或密码不正确',
-						});
-					}
-					
-				}).catch(err => {
-					console.log(err)
-					
-					// 模拟数据
-					var userinfo = {
-						username: this.account,
-						password: 'www',
-						userImg: './static/logo.png'
-					}
-					if (this.password === userinfo.password) {
-						this.toLogin(userinfo)
-					} else{
-						uni.showToast({
-							icon: 'none',
-							title: '用户账号或密码不正确',
-						});
-					}
-				})
+			...mapMutations(['SET_USERINFO', 'SET_OPENID']),
+			initredirectRouteData: function(query) {
+				if (query.redirectUrl) {
+					this.redirectRoute.path = query.redirectUrl;
+					delete query.redirectUrl;
+					this.routeQuery = query;
+				} else {
+					this.routeQuery = query;
+				}
 			},
-			toLogin: function(userinfo) {
-				this.login(userinfo)
-				uni.reLaunch({
-					url: '../index/index',
+			
+			getuserinfo: function(res) {
+				const _this = this;
+				console.log(res)
+				if (!res.detail.iv) {
+					uni.showToast({
+						icon: 'none',
+						title: '拒绝微信授权将无法登录',
+					});
+					return;
+				}
+				
+				// 设置userinfo到store
+				this.SET_USERINFO(res.detail.userInfo)
+				
+				uni.login({
+					provider: 'weixin',
+					success: function (loginRes) {
+						console.log(loginRes);
+						
+						// 有了code之后调用服务器端接口获取sessionkey (服务器端调用微信接口获取并返回给前端)
+						let code = loginRes.code;
+						_this.getSessionKey(code);
+			
+						
+						// 获取用户信息
+						uni.getUserInfo({
+						    provider: 'weixin',
+						    success: function (infoRes) {
+								console.log(infoRes)
+								console.log('用户昵称为：' + infoRes.userInfo.nickName);
+						    }
+						});
+					}
 				});
-			}
+				
+			},
+			async getSessionKey(code) {
+				let res = await this.$apis.fetchSessionKey({code: code});
+				console.log(res)
+				if (res) {
+					this.SET_OPENID(res.openid)
+				} else {
+					uni.showToast({
+						title: '从服务器端获取sessionkey失败',
+					});
+				}
+			},
+			bindLogin: function() {
+				uni.showToast({
+					icon: 'none',
+					title: '用户账号或密码不正确',
+				});
+			},
+
 		}
 	}
 </script>

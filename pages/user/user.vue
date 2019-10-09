@@ -1,63 +1,212 @@
 <template>
-	<view>
-		<!-- 与swiper结合实现同步更新的效果 -->
-		<wuc-tab :tab-list="tabList" :tabCur.sync="TabCur" @change="tabChange"></wuc-tab>
-		<swiper :current="TabCur" duration="300" @change="swiperChange">
-		  <swiper-item v-for="(item,index) in tabList" :key="index">
-		    <div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-			<div>{{item.name}}</div>
-		  </swiper-item>
-		</swiper>
+	<view class="center">
+		<view class="logo" @click="goLogin" :hover-class="!hasLogin ? 'logo-hover' : ''">
+			<image class="logo-img" :src="hasLogin ? userInfo.avatarUrl :avatarUrl"></image>
+			<view class="logo-title">
+				<text class="uer-name">Hi，{{hasLogin ? userInfo.name : '您未登录'}}</text>
+				<text class="go-login navigat-arrow" v-if="!hasLogin">&#xe65e;</text>
+			</view>
+		</view>
+		<view class="center-list">
+			<view class="center-list-item border-bottom">
+				<text class="list-icon">&#xe60f;</text>
+				<text class="list-text">帐号管理</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+			<view class="center-list-item">
+				<text class="list-icon">&#xe639;</text>
+				<text class="list-text">新消息通知</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+		</view>
+		<view class="center-list">
+			<view class="center-list-item border-bottom">
+				<text class="list-icon">&#xe60f;</text>
+				<text class="list-text">曲谱收藏</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+			<view class="center-list-item">
+				<text class="list-icon">&#xe639;</text>
+				<text class="list-text">活动历史</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+		</view>
+		<view class="center-list">
+			<view class="center-list-item border-bottom">
+				<text class="list-icon">&#xe60b;</text>
+				<text class="list-text">帮助与反馈</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+			<view class="center-list-item">
+				<text class="list-icon">&#xe65f;</text>
+				<text class="list-text">服务条款及隐私</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+		</view>
+		<view class="center-list">
+			<view class="center-list-item">
+				<text class="list-icon">&#xe614;</text>
+				<text class="list-text">关于应用</text>
+				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
-	import WucTab from '@/components/wuc-tab/wuc-tab.vue';
+	import {
+		mapState,
+		mapGetters
+	} from 'vuex'
 	
 	export default {
-		components: { 
-			WucTab 
-		},
 		data() {
 			return {
-				TabCur: 0,
-				tabList: [
-					{ id: 2, name: '类别1', sort: 1},
-					{ id: 3, name: '类别2', sort: 1},
-					{ id: 4, name: '类别3', sort: 1},
-					{ id: 5, name: '类别4', sort: 1},
-					{ id: 6, name: '类别5', sort: 1},
-					{ id: 7, name: '类别6', sort: 1},
-					{ id: 8, name: '类别7', sort: 1},
-					{ id: 9, name: '类别8', sort: 1},
-					{ id: 10, name: '类别9', sort: 1}
-				],
+				avatarUrl: this.$mAssetsPath.headImg,
 			}
 		},
-		methods: {
-			tabChange: function(index) {
-				this.TabCur = index;
-			},
-			swiperChange: function(e) {
-				let index = e.detail.current;
-				this.TabCur = index;
+		onLoad: function() {
+			if (this.hasLogin) {
 				
-				let cateid = this.tabList[index].id;
-				console.log(cateid)
-				// 有了cateid 再去调用api获取该分类下的数据
-				// 具体实现方式可参考index页面的navbar组件
+			}
+		},
+		computed: {
+			...mapState(['openId', 'userInfo']),
+			...mapGetters(['hasLogin']),
+		},
+		methods: {
+			goLogin() {
+				if (!this.hasLogin) {
+					this.$mRouter.push({
+						route:  this.$mRoutesConfig.login,
+						query: {
+							redirectUrl: this.$mRoutesConfig.user
+						}
+					})
+				}
 			}
 		}
 	}
 </script>
 
 <style>
+	@font-face {
+		font-family: texticons;
+		font-weight: normal;
+		font-style: normal;
+		src: url('https://at.alicdn.com/t/font_984210_5cs13ndgqsn.ttf') format('truetype');
+	}
 
+	page,
+	view {
+		display: flex;
+	}
+
+	page {
+		background-color: #f8f8f8;
+	}
+
+	.center {
+		flex-direction: column;
+	}
+
+	.logo {
+		width: 750upx;
+		height: 240upx;
+		padding: 20upx;
+		box-sizing: border-box;
+		background-color: #4cd964;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.logo-hover {
+		opacity: 0.8;
+	}
+
+	.logo-img {
+		width: 150upx;
+		height: 150upx;
+		border-radius: 150upx;
+	}
+
+	.logo-title {
+		height: 150upx;
+		flex: 1;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: row;
+		margin-left: 20upx;
+	}
+
+	.uer-name {
+		height: 60upx;
+		line-height: 60upx;
+		font-size: 38upx;
+		color: #FFFFFF;
+	}
+
+	.go-login.navigat-arrow {
+		font-size: 38upx;
+		color: #FFFFFF;
+	}
+
+	.login-title {
+		height: 150upx;
+		align-items: self-start;
+		justify-content: center;
+		flex-direction: column;
+		margin-left: 20upx;
+	}
+
+	.center-list {
+		background-color: #FFFFFF;
+		margin-top: 20upx;
+		width: 750upx;
+		flex-direction: column;
+	}
+
+	.center-list-item {
+		height: 90upx;
+		width: 750upx;
+		box-sizing: border-box;
+		flex-direction: row;
+		padding: 0upx 20upx;
+	}
+
+	.border-bottom {
+		border-bottom-width: 1upx;
+		border-color: #c8c7cc;
+		border-bottom-style: solid;
+	}
+
+	.list-icon {
+		width: 40upx;
+		height: 90upx;
+		line-height: 90upx;
+		font-size: 34upx;
+		color: #4cd964;
+		text-align: center;
+		font-family: texticons;
+		margin-right: 20upx;
+	}
+
+	.list-text {
+		height: 90upx;
+		line-height: 90upx;
+		font-size: 34upx;
+		color: #555;
+		flex: 1;
+		text-align: left;
+	}
+
+	.navigat-arrow {
+		height: 90upx;
+		width: 40upx;
+		line-height: 90upx;
+		font-size: 34upx;
+		color: #555;
+		text-align: right;
+		font-family: texticons;
+	}
 </style>

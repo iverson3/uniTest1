@@ -43,6 +43,10 @@ export default {
 		name: "首页",
 		path: "/pages/index/index",
 	},
+	user: {
+		name: "个人中心",
+		path: "/pages/user/user",
+	},
 	login: {
 		name: "登录",
 		path: "/pages/subuser/login/login",

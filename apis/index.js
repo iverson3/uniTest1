@@ -20,6 +20,9 @@ export const searchMember = (data, conf) => http.POST(`${config.baseUrl}/activit
 
 export const cancelActivity = (data, conf) => http.POST(`${config.baseUrl}/activity/cancelActivity`, data, conf);
 
+export const fetchSessionKey = (data) => http.POST(`${config.baseUrl}/user/fetchSessionKey`, data);
+
+
 
 
 
