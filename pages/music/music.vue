@@ -261,6 +261,7 @@
 			},
 			
 			async getData() {
+				const _this = this;
 				let type = (this.type == '全部' || this.type == '类型')? '' : this.type
 				let level = (this.level == '全部' || this.level == '难度')? '' : this.level
 				let sort = (this.sort == '排序')? 'mix' : this.sort
@@ -270,7 +271,7 @@
 						break
 					}
 				}
-				
+				// 根据页面选择的条件 调用api从服务器端获取数据
 				let paras = {
 					page: this.page,
 					pagesize: this.upOption.page.size,
@@ -279,7 +280,12 @@
 					level: level,
 					order: sort
 				};
-				let data = await this.$apis.getMusicList(paras);
+				let data = await this.$apis.getMusicList(paras, {}, function() {
+					if (_this.mescroll) {
+						// 请求失败则隐藏下拉加载状态
+						_this.mescroll.endErr()
+					}
+				});
 				console.log(data)
 				
 				let curPageData = data.data; 
@@ -299,50 +305,6 @@
 				if (data.last_page > this.page) {
 					this.page = this.page + 1;
 				}
-				
-				
-				
-				// 根据页面选择的条件 调用api从服务器端获取数据
-				// this.$http.request({
-				// 	url: '/music/getMusicList',
-				// 	method: 'post',
-				// 	header: {},
-				// 	params: {
-				// 		page: this.page,
-				// 		pagesize: this.upOption.page.size,
-				// 		name: this.searchText,
-				// 		type: type,
-				// 		level: level,
-				// 		order: sort
-				// 	}
-				// }).then(res => {
-				// 	console.log(res)
-				// 	let data = res.data.data;
-				// 	let curPageData = data.data; 
-				// 	let totalSize   = data.total; 
-					
-				// 	// 如果是第一页 则置空列表数据
-				// 	if(this.page == 1) {
-				// 		this.musicList = [];
-				// 	}   
-				// 	this.musicList = this.musicList.concat(curPageData); // 追加新数据
-					
-				// 	if (this.mescroll) {
-				// 		// 成功隐藏下拉加载状态
-				// 		this.mescroll.endBySize(curPageData.length, totalSize); 
-				// 	}
-					
-				// 	// 判断是否还有下一页
-				// 	if (data.last_page > this.page) {
-				// 		this.page = this.page + 1;
-				// 	}
-				// }).catch(err => {
-				// 	if (this.mescroll) {
-				// 		// 失败隐藏下拉加载状态
-				// 		this.mescroll.endErr()
-				// 	}
-				// 	console.log(err)
-				// })
 			},
 			
 			searchStart: function() {	// 触发搜索

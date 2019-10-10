@@ -2,11 +2,11 @@ import http from "./http.js";
 import config from "@/config/index.config.js";
 
 
-export const getMusicList = (data) => http.POST(`${config.baseUrl}/music/getMusicList`, data);
+export const getMusicList = (data, conf, callback) => http.POST(`${config.baseUrl}/music/getMusicList`, data, conf, callback);
 
 export const getDetail = (data) => http.POST(`${config.baseUrl}/music/getDetail`, data);
 
-export const getActivityList = (data) => http.POST(`${config.baseUrl}/activity/getActivityList`, data);
+export const getActivityList = (data, conf, callback) => http.POST(`${config.baseUrl}/activity/getActivityList`, data, conf, callback);
 
 export const validateMemberByWechat = (data, conf) => http.POST(`${config.baseUrl}/activity/validateMemberByWechat`, data, conf);
 

@@ -10,9 +10,6 @@ Vue.use(Vuex)
 // 	hasLogin: false,
 // 	username: '',
 // 	userImg: '',
-	
-// 	activityList: [],
-// 	curActid: 0,
 // };
 
 // const userInfo = uni.getStorageSync('userInfo');
@@ -23,7 +20,6 @@ Vue.use(Vuex)
 const TOKEN = uni.getStorageSync("token") || "";
 const OPENID = uni.getStorageSync("openId") || "";
 const USER_INFO = uni.getStorageSync("userInfo") || {};
-const CUSTOMER_INFO = uni.getStorageSync("customerInfo") || {};
 
 const store = new Vuex.Store({
 	state: {
@@ -35,8 +31,6 @@ const store = new Vuex.Store({
 		openId: OPENID,
 		// 用户信息 头像 昵称
 		userInfo: USER_INFO,
-		// 用户的商户信息
-		customerInfo: CUSTOMER_INFO,
 		
 		activityList: [],
 		curActid: 0,
@@ -86,24 +80,6 @@ const store = new Vuex.Store({
 			state.token = "";
 			uni.setStorageSync("token", "");
 		},
-		
-		
-		// login(state, userinfo) {
-		// 	state.hasLogin = true;
-		// 	state.username = userinfo.username;
-		// 	state.userImg  = userinfo.userImg;
-		// 	// state.loginProvider = provider;
-			
-		// 	uni.setStorageSync('userInfo', {...state});	
-		// },
-		// logout(state) {
-		// 	state.hasLogin = false
-		// 	state.username = '';
-		// 	state.userImg  = '';
-		// 	// state.openid = null
-			
-		// 	uni.clearStorageSync();
-		// },
 		
 		setActivityList(state, data) {
 			state.activityList = data;

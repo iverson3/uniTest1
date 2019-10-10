@@ -94,23 +94,23 @@
 						console.log(loginRes);
 						
 						// 有了code之后调用服务器端接口获取openid和session_key (服务器端调用微信接口获取并返回给前端)
-						_this.getSessionKey(loginRes.code);				
+						_this.getSessionKey(loginRes.code, res.detail.userInfo);				
 					}
 				});
 				
 			},
-			async getSessionKey(code) {
-				let res = await this.$apis.fetchSessionKey({code: code});
+			async getSessionKey(code, userinfo) {
+				let res = await this.$apis.fetchSessionKey({code: code, userinfo: userinfo});
 				console.log(res)
 				if (res) {
 					this.SET_OPENID(res.openid)
-					this.SET_TOKEN(res.openid)
+					this.SET_TOKEN(res.token)
 					
 					// 登录成功之后 跳转到过来的页面
 					this.jumptopre()
 				} else {
 					uni.showToast({
-						title: '从服务器端获取sessionkey失败',
+						title: '登录失败，请重试',
 					});
 				}
 			},
@@ -137,14 +137,7 @@
 									    provider: 'weixin',
 									    success: function (infoRes) {
 									        // console.log(infoRes.userInfo);
-											_this.SET_TOKEN(infoRes.userInfo.openId)
-											_this.SET_OPENID(infoRes.userInfo.openId)
-											delete infoRes.userInfo.openId;
-											delete infoRes.userInfo.unionId;
-											_this.SET_USERINFO(infoRes.userInfo)
-											
-											// 登录成功之后 跳转到过来的页面
-											_this.jumptopre()
+											_this.loginServer(infoRes.userInfo)
 									    }
 									});
 				                }
@@ -156,6 +149,30 @@
 						}
 				    }
 				});
+			},
+			async loginServer(userInfo) {
+				let openid = userInfo.openId;
+				delete userInfo.openId;
+				delete userInfo.unionId;
+				
+				let paras = {
+					code: '',
+					openid: openid,
+					userinfo: userInfo,
+				}
+				let res = await this.$apis.fetchSessionKey(paras);
+				console.log(res)
+				if (res && res.token) {
+					this.SET_TOKEN(res.token)
+					this.SET_OPENID(openid)
+					this.SET_USERINFO(userInfo)
+				} else {
+					uni.showToast({
+						title: '登录失败，请重试',
+					});
+				}
+				// 登录成功之后 跳转到过来的页面
+				this.jumptopre()
 			},
 			jumptopre: function() {
 				let tabBarPages = [

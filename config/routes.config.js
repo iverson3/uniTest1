@@ -16,27 +16,17 @@ import mConfig from "./index.config.js"
 
 export default {
 	// 权限路由
-	activityinfo: {
-		name: "活动详情",
-		path: "/pages/subactivity/activityinfo/activityinfo",
-		requiresAuth: true,
-		before: function() {
-			console.log('goto activityinfo before')
-			console.log(store)
-			let res = store.getters.hasLogin
-			console.log('login: ' + res)
-		},
-		after: function() {
-			console.log('goto activityinfo after')
-			let res = Apis.getMemberList({id: store.state.curActid})
-			console.log(res)
-		}
-	},
 	joinactivity: {
 		name: "活动报名",
 		path: "/pages/subactivity/activity/joinactivity",
-		requiresAuth: false
+		requiresAuth: true
 	},
+	cancelactivity: {
+		name: "取消活动报名",
+		path: "/pages/subactivity/activity/cancelactivity",
+		requiresAuth: true
+	},
+	
 	
 	// 非权限路由
 	index: {
@@ -64,6 +54,21 @@ export default {
 			console.log('back to activitylist')
 		}
 	},
+	activityinfo: {
+		name: "活动详情",
+		path: "/pages/subactivity/activityinfo/activityinfo",
+		before: function() {
+			console.log('goto activityinfo before')
+			// console.log(store)
+			let res = store.getters.hasLogin
+			console.log('login: ' + res)
+		},
+		after: function() {
+			console.log('goto activityinfo after')
+			// let res = Apis.getMemberList({id: store.state.curActid})
+			// console.log(res)
+		}
+	},
 	musiclist: {
 		name: "曲谱中心",
 		path: "/pages/music/music"
@@ -72,6 +77,9 @@ export default {
 		name: "曲谱详情",
 		path: "/pages/submusic/info/info"
 	},
+	
+	
+	
 	// index: {
 	// 	name: "推荐注册",
 	// 	path: "/pages/login/index"

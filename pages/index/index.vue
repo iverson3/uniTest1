@@ -190,19 +190,6 @@
 						newsid: newsid
 					}
 				})
-				
-				// uni.navigateTo({
-				// 	url: '../info/info?newsid=' + newsid,
-				// 	success: res => {
-				// 		console.log('gotoinfo success')
-				// 	},
-				// 	fail: () => {
-				// 		console.log('gotoinfo fail')
-				// 	},
-				// 	complete: () => {
-				// 		console.log('gotoinfo complete')
-				// 	}
-				// });
 			},
 			tologout: function() {
 				// 退出登录后不需要显示的刷新页面，因为退出登录成功后 state改变 页面会自动重新加载
@@ -233,19 +220,18 @@
 			
 			async loadMusicData(source){
 				// 这里是将订单挂载到tab列表下
-				let index = this.tabCurrentIndex;
+				let index   = this.tabCurrentIndex;
 				let navItem = this.navList[index];
-				let state = navItem.state;
+				let state   = navItem.state;
 				
+				// tab切换只有第一次需要加载数据
 				if(source === 'tabChange' && navItem.loaded === true){
-					//tab切换只有第一次需要加载数据
 					return;
 				}
+				// 防止重复加载
 				if(navItem.loadingType === 'loading' || navItem.loadingType === 'noMore'){
-					//防止重复加载
 					return;
 				}
-				
 				navItem.loadingType = 'loading';
 		
 				let paras = {
@@ -262,38 +248,18 @@
 				data.data.forEach(item => {
 					navItem.musicList.push(item);
 				})
-				
-				
-				// this.$http.request({
-				// 	url: '/music/getMusicList',
-				// 	method: 'post',
-				// 	header: {},
-				// 	params: 
-				// }).then(res => {
-				// 	console.log(res)
-				// 	var musicList = res.data.data.data
-					
-				// 	musicList.forEach(item => {
-				// 		navItem.musicList.push(item);
-				// 	})
-				// }).catch(err => {
-				// 	console.log(err)
-				// })
-				
-				//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+			
+				// loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 				this.$set(navItem, 'loaded', true);
-				
-				//判断是否还有数据， 有改为 more， 没有改为noMore 
-				// navItem.loadingType = 'more';
+				// 判断是否还有数据，有改为more，没有改为noMore (此页面只加载一页数据)
 				navItem.loadingType = 'noMore';
-				
 			}, 
-			//swiper 切换
+			// swiper 切换
 			changeTab(e){
 				this.tabCurrentIndex = e.target.current;
 				this.loadMusicData('tabChange');
 			},
-			//顶部tab点击
+			// 顶部tab点击
 			tabClick(index){
 				this.tabCurrentIndex = index;
 			}

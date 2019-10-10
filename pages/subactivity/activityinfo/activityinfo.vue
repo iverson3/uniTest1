@@ -33,9 +33,7 @@
 		    <view class="activity-member-list">
 		        <view class="member-count">
 		            <view class="member-count-text">已报名({{memberSum}})</view>
-					<navigator class="member-count-cancel" :url="'../activity/cancelactivity?id='+activityDetail.id" hover-class="navigator-hover">
-						<view v-show="canJoin" class="cancel-join">取消报名>></view>
-					</navigator>
+					<view v-show="canJoin" @click="cancelJoin(activityDetail.id)" class="cancel-join member-count-cancel">取消报名>></view>
 		        </view>
 				
 				<view class="uni-list">
@@ -80,12 +78,9 @@
 			return {
 				activityDetail: null,
 				memberList: [],
-				
-				finished: true,
 			}
 		},
 		onLoad: function(e) {
-			console.log(this.activityList)
 			console.log(this.curActid)
 			this.activityDetail = this.curActivityDetail
 			
@@ -97,13 +92,12 @@
 			console.log('activityinfo page show')
 			this.refreshData()
 			
-			console.log(this.$mRoutesConfig.activityinfo)
 			if (typeof this.$mRoutesConfig.activityinfo.after == 'function') {
 				this.$mRoutesConfig.activityinfo.after()
 			}
 		},
 		computed: {
-			...mapState(['activityList', 'curActid']),
+			...mapState(['curActid']),
 			...mapGetters(['curActivityDetail']),
 			memberSum: function() {
 				return this.memberList.length;
@@ -119,9 +113,9 @@
 				const d_end = parseInt(this.activityDetail.end_time.substr(8, 2))
 				// 判断活动开始时间和结束时间是否位于同一天之内
 				if (m_start === m_end && d_start === d_end) {
-				  return this.activityDetail.start_time.substr(5, 11) + ' - ' + this.activityDetail.end_time.substr(11, 5)
+					return this.activityDetail.start_time.substr(5, 11) + ' - ' + this.activityDetail.end_time.substr(11, 5)
 				} else {
-				  return this.activityDetail.start_time.substr(5, 11) + '至' + this.activityDetail.end_time.substr(5, 11)
+					return this.activityDetail.start_time.substr(5, 11) + '至' + this.activityDetail.end_time.substr(5, 11)
 				}
 			    // return this.$format(new Date(parseInt(this.activityDetail.start_time) * 1000), 'MM月DD日 HH:mm') + ' - ' + this.$format(new Date(parseInt(this.activityDetail.end_time) * 1000), 'HH:mm')
 			},
@@ -162,36 +156,20 @@
 				console.log(res)
 				this.memberList = res;
 				
-				
-				// this.$http.request({
-				// 	url: '/activity/getMemberList',
-				// 	method: 'post',
-				// 	params: {id: activityid}
-				// }).then(res => {
-				// 	console.log(res)
-				// 	this.memberList = res.data.data;
-				// }).catch(err => {
-				// 	console.log(err)
-				// })
-				
-				let res2 = await this.$apis.incrementView({id: activityid});
-				console.log(res2)
-				
 				// 增加访问量
-				// this.$http.request({
-				// 	url: '/activity/incrementView',
-				// 	method: 'post',
-				// 	params: {id: activityid}
-				// }).then(res => {
-				// 	console.log(res)
-				// }).catch(err => {
-				// 	console.log(err)
-				// })
+				let res2 = await this.$apis.incrementView({id: activityid});
 			},
 			gotoJoin: function(id) {
-				// this.$mRouter.back(1)
 				this.$mRouter.push({
 					route:  this.$mRoutesConfig.joinactivity,
+					query: {
+						id: id
+					}
+				})
+			},
+			cancelJoin: function(id) {
+				this.$mRouter.push({
+					route:  this.$mRoutesConfig.cancelactivity,
 					query: {
 						id: id
 					}

@@ -1,5 +1,5 @@
 import store from "@/store"
-function HTTP(obj, config) {
+function HTTP(obj, config, callback) {
 
 	let defaultConfig = {
 		isRes: false,     // 是否需要直接返回请求的结果
@@ -37,24 +37,19 @@ function HTTP(obj, config) {
 				uni.hideLoading();
 				// 状态码为200
 				if (res.statusCode == 200) {
-					
 					// 这里可以当作"响应拦截器"使用
 					// 可以对请求的响应数据做初步的统一的处理
 					console.log('响应拦截处')
-					
 					let data = res.data;
 					
-					// 服务器端返回的数据结构 需要修改
-					// data.code = '01'
-
-					//自动校验用户是否登录过期
-					if (data.code == "01") {
+					// 自动校验用户是否登录过期
+					if (data.code == "expired" || data.code == "notoken" || data.code == "wrongtoken") {   
 						store.dispatch("reLogin");
 						return;
 					}
 
-					//返回 { code:10000,msg:"消息",data:[] }
-					//返回 { code:10000,error:"消息",data:[] }
+					// 返回 { code:10000,msg:"消息",data:[] }
+					// 返回 { code:10000,error:"消息",data:[] }
 					if (config.isRes) {
 						// 直接返回请求结果数据
 						resolve(data)
@@ -89,6 +84,10 @@ function HTTP(obj, config) {
 				}
 			},
 			fail: (err) => {
+				// 有callback函数传过来即意味着页面在请求失败后有需要自行处理的逻辑
+				if (callback && (typeof callback === 'function')) {
+					callback();
+				}
 				uni.hideLoading();
 				uni.showToast({
 					title: "网络异常，请稍后再试!",
@@ -108,7 +107,9 @@ function HTTP(obj, config) {
 		console.log('请求拦截处222')
 		
 		const OPENID = uni.getStorageSync("openId");
+		const TOKEN  = uni.getStorageSync("token");
 		if (OPENID) options["header"]["openId"] = OPENID;
+		if (TOKEN) options["header"]["token"] = TOKEN;
 
 		if (options.url && options.method) {
 			wx.request(options);
@@ -126,26 +127,26 @@ function HTTP(obj, config) {
 
 
 export default {
-	GET(url, data = {}, config) {
+	GET(url, data = {}, config, callback) {
 		return HTTP({
 			url,
 			data,
 			method: "GET"
-		}, config);
+		}, config, callback);
 	},
-	POST(url, data = {}, config) {
+	POST(url, data = {}, config, callback) {
 		return HTTP({
 			url,
 			data,
 			method: "POST"
-		}, config);
+		}, config, callback);
 	},
 
-	POSTformdata(url, data = {}, config) {
+	POSTformdata(url, data = {}, config, callback) {
 		return HTTP({
 			url,
 			data,
 			method: "POST"
-		}, config);
+		}, config, callback);
 	}
 }

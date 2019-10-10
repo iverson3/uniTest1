@@ -51,6 +51,7 @@ $mRouter.beforeEach((navType, to) => {
 	}
 	
 	console.log('route before')
+	console.log(getCurrentPages())
 
 	// 过滤需要权限的页面
 	if (to.route.requiresAuth) {
@@ -88,14 +89,14 @@ $mRouter.beforeEach((navType, to) => {
 			}
 		}
 	} else {
-		console.log(to)
-		console.log(to.route)
+		// console.log(to)
+		// console.log(to.route)
 		if (typeof to.route.before == 'function') {
 			to.route.before()
 		}
 		
-		console.log(navType)
-		console.log($mUtils.objParseUrlAndParam(to.route.path, to.query))
+		// console.log(navType)
+		// console.log($mUtils.objParseUrlAndParam(to.route.path, to.query))
 		
 		uni[navType]({
 			url: $mUtils.objParseUrlAndParam(to.route.path, to.query)
