@@ -43,7 +43,7 @@ function HTTP(obj, config, callback) {
 					let data = res.data;
 					
 					// 自动校验用户是否登录过期
-					if (data.code == "expired" || data.code == "notoken" || data.code == "wrongtoken") {   
+					if (data.code == "expired" || data.code == "notoken" || data.code == "wrongtoken" || data.code == "noopenid") {   
 						store.dispatch("reLogin");
 						return;
 					}
